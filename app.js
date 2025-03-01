@@ -56,9 +56,21 @@ document.addEventListener("DOMContentLoaded", () => {
         if (query) fetchDrugInfo(query);
     });
 
-    scanButton.addEventListener("click", () => {
+    async function activateCamera() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            video.srcObject = stream;
+            video.play();
+        } catch (error) {
+            console.error("Error accessing the camera:", error);
+        }
+    }
+
+    scanButton.addEventListener("click", async () => {
+        await activateCamera();
         video.style.display = "block";
         Quagga.init({
+            inputStream: { name: "Live", type: "LiveStream", target: video },
             inputStream: { name: "Live", type: "LiveStream", target: video },
             decoder: { readers: ["ean_reader"] }
         }, err => {
@@ -149,5 +161,3 @@ document.addEventListener("DOMContentLoaded", () => {
         chatbox.classList.toggle("minimized");
     });
 });
-
-

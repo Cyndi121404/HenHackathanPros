@@ -9,7 +9,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    flex-direction: column; /* Center content vertically */
+    flex-direction: row /* Center content vertically */
 }
 
 /* Header */

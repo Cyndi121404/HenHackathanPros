@@ -9,7 +9,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    flex-direction: column; /* Center content vertically */
+    flex-direction: column;
 }
 
 /* Header */
@@ -113,29 +113,32 @@ video {
     border: 1px solid #ccc;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    display: flex;
+    display: none;
     flex-direction: column;
-    transition: transform 0.3s ease;
     overflow: hidden;
 }
 
-#chatbox.minimized {
-    transform: translateY(360px);
+#chatbox.visible {
+    display: flex;
 }
 
-#chat-toggle {
+.chat-header {
     background: #007bff;
     color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+#chat-minimize-button {
+    background: none;
     border: none;
-    padding: 5px 10px;
+    color: white;
     cursor: pointer;
-    font-size: 14px;
-    width: 100%;
-    text-align: center;
-    border-radius: 10px 10px 0 0;
-    position: absolute;
-    bottom: 100%;
-    left: 0;
+    font-size: 16px;
 }
 
 #chat-messages {
@@ -168,7 +171,6 @@ video {
     cursor: pointer;
 }
 
-/* Chatbox Toggle Visibility */
-#chatbox.minimized #chat-toggle {
-    bottom: 0;
+.hidden {
+    display: none;
 }

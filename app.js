@@ -13,9 +13,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const messageInput = document.getElementById("message-input");
     const sendButton = document.getElementById("send-button");
     const chatToggleButton = document.getElementById("chat-toggle");
+    const chatProviderButton = document.getElementById("chat-provider-button");
 
     let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
     let chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || [];
+
+    chatbox.style.display = "none";
 
     function updateHistory() {
         historyList.innerHTML = "";
@@ -95,7 +98,6 @@ document.addEventListener("DOMContentLoaded", () => {
             Quagga.stop();
             video.style.display = "none";
             
-            // Stop the camera stream
             let tracks = video.srcObject.getTracks();
             tracks.forEach(track => track.stop());
 
@@ -143,6 +145,10 @@ document.addEventListener("DOMContentLoaded", () => {
     sendButton.addEventListener("click", sendMessage);
     messageInput.addEventListener("keypress", event => {
         if (event.key === "Enter") sendMessage();
+    });
+
+    chatProviderButton.addEventListener("click", () => {
+        chatbox.style.display = "block";
     });
 
     chatToggleButton.addEventListener("click", () => {

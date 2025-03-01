@@ -37,8 +37,13 @@
         <ul id="history-list"></ul>
     </div>
 
-    <div class="chatbox">
-        <h2>Chat with Assistant</h2>
+    <button id="chat-provider-button">💬 Chat with Provider</button>
+
+    <div id="chatbox" class="hidden">
+        <div class="chat-header">
+            <h2>Chat with Assistant</h2>
+            <button id="chat-minimize-button">➖</button>
+        </div>
         <div id="chat-messages" class="chat-messages"></div>
         <div class="chat-input">
             <input type="text" id="message-input" placeholder="Type a message...">

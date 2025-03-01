@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     const scanButton = document.getElementById("start-scan");
     const video = document.getElementById("camera-preview");
-    const canvas = document.getElementById("barcode-canvas");
     const drugInput = document.getElementById("drug-input");
     const searchButton = document.getElementById("search-drug");
     const drugNameElem = document.querySelector("#drug-name span");
@@ -9,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const historyList = document.getElementById("history-list");
     const reminderButton = document.getElementById("set-reminder");
     const themeButton = document.getElementById("toggle-theme");
+    const barcodeDisplay = document.getElementById("barcode-display"); // New element to display barcode
 
     let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
 
@@ -63,6 +63,11 @@ document.addEventListener("DOMContentLoaded", () => {
             Quagga.stop();
             video.style.display = "none";
             let barcode = data.codeResult.code;
+
+            // Display the barcode value on the page
+            barcodeDisplay.textContent = `Scanned Barcode: ${barcode}`;
+
+            // Fetch drug info based on the barcode
             fetchDrugInfo(barcode);
         });
     });

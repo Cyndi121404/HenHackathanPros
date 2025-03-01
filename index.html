@@ -6,6 +6,7 @@
     <title>Medicine Reminder</title>
     <link rel="stylesheet" href="styles.css">
     <script defer src="app.js"></script>
+    <script src="https://unpkg.com/quagga@0.12.1/dist/quagga.min.js"></script> <!-- QuaggaJS -->
 </head>
 <body>
 
@@ -18,7 +19,22 @@
         <section id="scanner">
             <h2>Scan Your Medicine</h2>
             <button id="scan-btn">📷 Scan Barcode</button>
-            <video id="scanner-preview" autoplay hidden></video>
+            <div id="scanner-container">
+                <video id="scanner-preview" autoplay hidden></video>
+            </div>
+            <p id="scanned-barcode"></p>
+        </section>
+
+        <section id="manual-entry">
+            <h2>Enter Medicine Manually</h2>
+            <form id="manual-entry-form">
+                <input type="text" id="medicine-name" placeholder="Medicine Name" required>
+                <input type="text" id="manufacturer" placeholder="Manufacturer" required>
+                <input type="text" id="dosage-form" placeholder="Dosage Form" required>
+                <input type="text" id="barcode" placeholder="Barcode (Optional)">
+                <textarea id="notes" placeholder="Additional Notes (Optional)"></textarea>
+                <button type="submit">Add Medicine</button>
+            </form>
         </section>
 
         <section id="medicines">

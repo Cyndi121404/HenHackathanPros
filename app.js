@@ -3,9 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const scannerPreview = document.getElementById("scanner-preview");
     const scannedBarcode = document.getElementById("scanned-barcode");
     const video = document.getElementById("scanner-stream");
-    const manualEntryForm = document.getElementById("manual-entry-form");
-    const medicinesList = document.getElementById("medicines");
-    const medicineInfo = document.getElementById("medicine-info");
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
     const toggleAccessibilityBtn = document.getElementById("toggle-accessibility");
 
     // List to store medications
@@ -22,50 +21,44 @@ document.addEventListener("DOMContentLoaded", () => {
     // Button to start barcode scanning
     scanBtn.addEventListener("click", startScanner);
 
-    // Function to start scanning using Quagga
+    // Function to start scanning using jsQR
     function startScanner() {
-        // Make sure camera permissions are granted
         navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
             .then((stream) => {
                 video.srcObject = stream;
                 video.play();
-                scannerPreview.hidden = false; // Show video preview
+                scannerPreview.hidden = false;
                 console.log("Camera access granted");
 
-                // Initialize Quagga once video stream is ready
-                Quagga.init({
-                    inputStream: {
-                        type: "LiveStream",
-                        target: video,
-                        constraints: {
-                            facingMode: "environment"
-                        }
-                    },
-                    decoder: {
-                        readers: ["ean_reader", "upc_reader", "code_128_reader", "ean_13_reader"]
-                    }
-                }, function(err) {
-                    if (err) {
-                        console.error("Error initializing Quagga:", err);
-                        return;
-                    }
-                    console.log("Quagga initialized successfully");
-                    Quagga.start();
-                });
-
-                // Listen for detected barcode
-                Quagga.onDetected(function(result) {
-                    const barcode = result.codeResult.code;
-                    console.log("Barcode detected: ", barcode);
-                    scannedBarcode.textContent = `Scanned Barcode: ${barcode}`;
-                    fetchMedicineInfo(barcode); // Fetch information from OpenFDA API
-                    Quagga.stop();  // Stop the scanner once a barcode is detected
-                });
-
+                // Start scanning
+                requestAnimationFrame(scanFrame);
             }).catch((error) => {
                 console.error("Camera access denied or not available:", error);
                 alert("Camera access is required for barcode scanning. Please check your permissions.");
             });
+    }
+
+    // Function to scan the video stream using jsQR
+    function scanFrame() {
+        if (video.readyState === video.HAVE_ENOUGH_DATA) {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const code = jsQR(imageData.data, canvas.width, canvas.height);
+
+            if (code) {
+                const barcode = code.data;
+                console.log("Barcode detected: ", barcode);
+                scannedBarcode.textContent = `Scanned Barcode: ${barcode}`;
+                fetchMedicineInfo(barcode); // Fetch information from OpenFDA API
+                video.pause();  // Pause the video feed once a barcode is detected
+            } else {
+                // Continue scanning
+                requestAnimationFrame(scanFrame);
+            }
+        }
     }
 
     // Fetch medicine info from OpenFDA API by name or barcode
@@ -87,11 +80,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 const medicine = data.results[0];
                 addMedicineToList(medicine);
             } else {
-                medicineInfo.textContent = "No data found for this medicine.";
+                scannedBarcode.textContent = "No data found for this medicine.";
             }
         } catch (error) {
             console.error("Error fetching data from OpenFDA:", error);
-            medicineInfo.textContent = "Error fetching medicine data.";
+            scannedBarcode.textContent = "Error fetching medicine data.";
         }
     }
 
@@ -108,22 +101,8 @@ document.addEventListener("DOMContentLoaded", () => {
             <p><strong>Manufacturer:</strong> ${manufacturer}</p>
             <p><strong>Dosage Form:</strong> ${dosageForm}</p>
             <p><strong>Product NDC:</strong> ${productNdc}</p>
-            <button onclick="deleteMedicine('${productNdc}')">Delete</button>
         `;
 
         medications.push(medicine);
-        medicinesList.appendChild(medicineItem);
-        medicineInfo.innerHTML = `
-            <p><strong>Brand Name:</strong> ${name}</p>
-            <p><strong>Manufacturer:</strong> ${manufacturer}</p>
-            <p><strong>Dosage Form:</strong> ${dosageForm}</p>
-            <p><strong>Product NDC:</strong> ${productNdc}</p>
-        `;
     }
-
-    // Function to delete a medicine from the list
-    window.deleteMedicine = function(ndc) {
-        medications = medications.filter(med => med.product_ndc[0] !== ndc);
-        renderMedicineList();
-    };
 });

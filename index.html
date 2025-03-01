@@ -3,45 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medicine Reminder Web App</title>
+    <title>Medicine Reminder</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://unpkg.com/quagga@0.12.1/dist/quagga.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script> <!-- Include jsQR CDN -->
 </head>
 <body>
-    <header>
-        <h1>Medicine Reminder Web App</h1>
-    </header>
-
-    <div id="scanner">
-        <h2>Scan Barcode</h2>
-        <button id="scan-btn">Start Scanning</button>
+    <div class="container">
+        <button id="scan-btn" class="btn">Scan Barcode</button>
         <div id="scanner-preview" hidden>
-            <video id="scanner-stream" width="100%" height="auto" style="border-radius: 12px; background-color: black;"></video>
+            <video id="scanner-stream" width="300" height="200" autoplay></video>
+            <canvas id="canvas" hidden></canvas>
         </div>
-        <p id="scanned-barcode">Scanned Barcode: None</p>
+        <div>
+            <p id="scanned-barcode"></p>
+        </div>
+        <div>
+            <ul id="medicines"></ul>
+        </div>
+        <div>
+            <button id="toggle-accessibility" class="btn">Accessibility Mode: Toggle Off</button>
+        </div>
     </div>
-
-    <div id="manual-entry">
-        <h2>Or Enter Medicine Information</h2>
-        <form id="manual-entry-form">
-            <label for="medicine-name">Medicine Name or Code:</label>
-            <input type="text" id="medicine-name" name="medicine-name" placeholder="Enter name or code" required>
-            <button type="submit">Submit</button>
-        </form>
-    </div>
-
-    <div id="medicine-list">
-        <h2>Your Medications</h2>
-        <ul id="medicines"></ul>
-    </div>
-
-    <div id="medicine-details">
-        <h2>Medicine Information</h2>
-        <p id="medicine-info">No information available yet.</p>
-    </div>
-
-    <!-- Accessibility Toggle Button -->
-    <button id="toggle-accessibility">Accessibility Mode: Toggle Off</button>
 
     <script src="app.js"></script>
 </body>

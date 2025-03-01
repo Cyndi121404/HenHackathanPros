@@ -1,108 +1,73 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const scanBtn = document.getElementById("scan-btn");
-    const scannerPreview = document.getElementById("scanner-preview");
-    const scannedBarcode = document.getElementById("scanned-barcode");
-    const video = document.getElementById("scanner-stream");
-    const canvas = document.getElementById("canvas");
-    const ctx = canvas.getContext("2d");
-    const toggleAccessibilityBtn = document.getElementById("toggle-accessibility");
+let darkMode = true;
 
-    // List to store medications
-    let medications = [];
+function toggleScanner() {
+    let scannerContainer = document.getElementById("scanner-container");
+    scannerContainer.classList.toggle("hidden");
+    if (!scannerContainer.classList.contains("hidden")) {
+        startScanner();
+    } else {
+        Quagga.stop();
+    }
+}
 
-    // Toggle accessibility mode (high contrast greyscale)
-    toggleAccessibilityBtn.addEventListener("click", () => {
-        const isHighContrast = document.body.classList.toggle("high-contrast");
-        toggleAccessibilityBtn.textContent = isHighContrast 
-            ? "Accessibility Mode: Toggle On" 
-            : "Accessibility Mode: Toggle Off";
+function startScanner() {
+    Quagga.init({
+        inputStream: { name: "Live", type: "LiveStream", target: document.querySelector("#scanner") },
+        decoder: { readers: ["ean_reader", "upc_reader"] }
+    }, function(err) {
+        if (!err) { Quagga.start(); }
     });
+    Quagga.onDetected(data => {
+        fetchDrugInfo(data.codeResult.code);
+        Quagga.stop();
+    });
+}
 
-    // Button to start barcode scanning
-    scanBtn.addEventListener("click", startScanner);
-
-    // Function to start scanning using jsQR
-    function startScanner() {
-        navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
-            .then((stream) => {
-                video.srcObject = stream;
-                video.play();
-                scannerPreview.hidden = false;
-                console.log("Camera access granted");
-
-                // Start scanning
-                requestAnimationFrame(scanFrame);
-            }).catch((error) => {
-                console.error("Camera access denied or not available:", error);
-                alert("Camera access is required for barcode scanning. Please check your permissions.");
-            });
-    }
-
-    // Function to scan the video stream using jsQR
-    function scanFrame() {
-        if (video.readyState === video.HAVE_ENOUGH_DATA) {
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            const code = jsQR(imageData.data, canvas.width, canvas.height);
-
-            if (code) {
-                const barcode = code.data;
-                console.log("Barcode detected: ", barcode);
-                scannedBarcode.textContent = `Scanned Barcode: ${barcode}`;
-                fetchMedicineInfo(barcode); // Fetch information from OpenFDA API
-                video.pause();  // Pause the video feed once a barcode is detected
-            } else {
-                // Continue scanning
-                requestAnimationFrame(scanFrame);
+function fetchDrugInfo(code) {
+    fetch(`https://api.fda.gov/drug/ndc.json?search=product_ndc:${code}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.results) {
+                let drug = data.results[0];
+                document.getElementById("drug-info").innerHTML = `<h2>${drug.brand_name}</h2><p>${drug.dosage_form}</p>`;
+                addDrugToList(drug.brand_name);
+                requestNotification();
             }
-        }
-    }
+        });
+}
 
-    // Fetch medicine info from OpenFDA API by name or barcode
-    async function fetchMedicineInfo(query) {
-        try {
-            let apiUrl = '';
-            if (isNaN(query)) {
-                // If it's not a number, it's a name
-                apiUrl = `https://api.fda.gov/drug/ndc.json?search=brand_name:"${query}"&limit=1`;
-            } else {
-                // If it's a number, treat it as a barcode (product_ndc)
-                apiUrl = `https://api.fda.gov/drug/ndc.json?search=product_ndc:"${query}"&limit=1`;
+function manualSearch() {
+    let query = document.getElementById("search-input").value;
+    fetch(`https://api.fda.gov/drug/ndc.json?search=brand_name:${query}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.results) {
+                let drug = data.results[0];
+                document.getElementById("drug-info").innerHTML = `<h2>${drug.brand_name}</h2><p>${drug.dosage_form}</p>`;
+                addDrugToList(drug.brand_name);
+                requestNotification();
             }
+        });
+}
 
-            const response = await fetch(apiUrl);
-            const data = await response.json();
+function addDrugToList(name) {
+    let list = document.getElementById("drug-list");
+    let item = document.createElement("li");
+    item.textContent = name;
+    list.appendChild(item);
+}
 
-            if (data.results && data.results.length > 0) {
-                const medicine = data.results[0];
-                addMedicineToList(medicine);
-            } else {
-                scannedBarcode.textContent = "No data found for this medicine.";
-            }
-        } catch (error) {
-            console.error("Error fetching data from OpenFDA:", error);
-            scannedBarcode.textContent = "Error fetching medicine data.";
-        }
+function requestNotification() {
+    if (Notification.permission !== "granted") {
+        Notification.requestPermission();
+    } else {
+        let time = prompt("Enter reminder time in minutes:");
+        setTimeout(() => new Notification("Medication Reminder!"), time * 60000);
     }
+}
 
-    // Add the medicine to the list and display its details
-    function addMedicineToList(medicine) {
-        const name = medicine.openfda.brand_name ? medicine.openfda.brand_name[0] : "Unknown";
-        const manufacturer = medicine.openfda.manufacturer_name ? medicine.openfda.manufacturer_name[0] : "Unknown Manufacturer";
-        const dosageForm = medicine.dosage_form ? medicine.dosage_form : "Unknown dosage form";
-        const productNdc = medicine.product_ndc ? medicine.product_ndc[0] : "N/A";
-
-        const medicineItem = document.createElement("li");
-        medicineItem.innerHTML = `
-            <p><strong>Brand Name:</strong> ${name}</p>
-            <p><strong>Manufacturer:</strong> ${manufacturer}</p>
-            <p><strong>Dosage Form:</strong> ${dosageForm}</p>
-            <p><strong>Product NDC:</strong> ${productNdc}</p>
-        `;
-
-        medications.push(medicine);
-    }
-});
+function toggleTheme() {
+    darkMode = !darkMode;
+    document.body.style.backgroundColor = darkMode ? "#2c1b0f" : "#888";
+    document.body.style.color = darkMode ? "#a0e0ff" : "black";
+}

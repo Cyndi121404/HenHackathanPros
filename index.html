@@ -1,6 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drug Info Scanner</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+</head>
 <body>
     <header>
-        <h1>DoseDoodle</h1>
+        <h1>Drug Info Scanner</h1>
     </header>
 
     <button id="toggle-theme">🌙 Toggle Accessibility</button>
@@ -15,26 +25,25 @@
         <button id="search-drug">🔍 Search</button>
     </div>
 
-    <div class="main-container">
-        <div class="sidebar">
-            <h2>Search History</h2>
-            <ul id="history-list"></ul>
-        </div>
-
-        <div class="chatbox">
-            <h2>Chat with Assistant</h2>
-            <div id="chat-messages" class="chat-messages"></div>
-            <div class="chat-input">
-                <input type="text" id="message-input" placeholder="Type a message...">
-                <button id="send-button">Send</button>
-            </div>
-        </div>
-    </div>
-
     <div class="drug-info">
         <h2>Drug Information</h2>
         <p id="drug-name">Name: <span>-</span></p>
         <p id="drug-facts">Facts: <span>-</span></p>
         <button id="set-reminder">⏰ Set Reminder</button>
     </div>
+
+    <div class="sidebar">
+        <h2>Search History</h2>
+        <ul id="history-list"></ul>
+    </div>
+
+    <div class="chatbox">
+        <h2>Chat with Assistant</h2>
+        <div id="chat-messages" class="chat-messages"></div>
+        <div class="chat-input">
+            <input type="text" id="message-input" placeholder="Type a message...">
+            <button id="send-button">Send</button>
+        </div>
+    </div>
 </body>
+</html>

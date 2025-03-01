@@ -24,33 +24,48 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Function to start scanning using Quagga
     function startScanner() {
-        // Initialize the scanner
-        Quagga.init({
-            inputStream: {
-                type: "LiveStream",
-                constraints: {
-                    facingMode: "environment"
-                }
-            },
-            decoder: {
-                readers: ["ean_reader", "upc_reader", "code_128_reader", "ean_13_reader"]
-            }
-        }, function(err) {
-            if (err) {
-                console.log("Error initializing scanner:", err);
-                return;
-            }
-            Quagga.start();
-            scannerPreview.hidden = false; // Show video preview
-        });
+        // Make sure camera permissions are granted
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+            .then((stream) => {
+                video.srcObject = stream;
+                video.play();
+                scannerPreview.hidden = false; // Show video preview
+                console.log("Camera access granted");
 
-        // Listen for detected barcode
-        Quagga.onDetected(function(result) {
-            const barcode = result.codeResult.code;
-            scannedBarcode.textContent = `Scanned Barcode: ${barcode}`;
-            fetchMedicineInfo(barcode); // Fetch information from OpenFDA API
-            Quagga.stop();  // Stop the scanner once a barcode is detected
-        });
+                // Initialize Quagga once video stream is ready
+                Quagga.init({
+                    inputStream: {
+                        type: "LiveStream",
+                        target: video,
+                        constraints: {
+                            facingMode: "environment"
+                        }
+                    },
+                    decoder: {
+                        readers: ["ean_reader", "upc_reader", "code_128_reader", "ean_13_reader"]
+                    }
+                }, function(err) {
+                    if (err) {
+                        console.error("Error initializing Quagga:", err);
+                        return;
+                    }
+                    console.log("Quagga initialized successfully");
+                    Quagga.start();
+                });
+
+                // Listen for detected barcode
+                Quagga.onDetected(function(result) {
+                    const barcode = result.codeResult.code;
+                    console.log("Barcode detected: ", barcode);
+                    scannedBarcode.textContent = `Scanned Barcode: ${barcode}`;
+                    fetchMedicineInfo(barcode); // Fetch information from OpenFDA API
+                    Quagga.stop();  // Stop the scanner once a barcode is detected
+                });
+
+            }).catch((error) => {
+                console.error("Camera access denied or not available:", error);
+                alert("Camera access is required for barcode scanning. Please check your permissions.");
+            });
     }
 
     // Fetch medicine info from OpenFDA API by name or barcode

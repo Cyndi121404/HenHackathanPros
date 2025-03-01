@@ -6,10 +6,10 @@ body {
     margin: 0;
     padding: 0;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start; /* Aligns the items to the left */
+    align-items: flex-start; /* Aligns the items to the top */
     height: 100vh;
-    flex-direction: column; /* Center content vertically */
+    flex-direction: row; /* Arrange content in a row */
 }
 
 /* Header */

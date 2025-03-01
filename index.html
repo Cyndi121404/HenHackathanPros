@@ -3,30 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medication Reminder</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+    <title>Drug Info Scanner</title>
     <link rel="stylesheet" href="styles.css">
+    <script defer src="app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
 </head>
 <body>
     <div class="container">
+        <header>
+            <h1>Drug Info Scanner</h1>
+            <button id="toggle-theme">Toggle Accessibility Mode</button>
+        </header>
+
         <div class="sidebar">
-            <h3>Previous Drugs</h3>
-            <ul id="drug-list"></ul>
+            <h2>Search History</h2>
+            <ul id="history-list"></ul>
         </div>
-        <div class="main">
-            <h1>Medication Scanner & Reminder</h1>
-            <button onclick="toggleScanner()">Scan Barcode</button>
-            <button onclick="toggleTheme()">Toggle Accessibility Mode</button>
-            <div id="scanner-container" class="hidden">
-                <video id="scanner" width="300" height="200"></video>
-            </div>
-            <div class="manual-search">
-                <input type="text" id="search-input" placeholder="Enter drug name or NDC">
-                <button onclick="manualSearch()">Search</button>
-            </div>
-            <div id="drug-info"></div>
-        </div>
+
+        <main>
+            <section class="scanner">
+                <button id="start-scan">Scan Barcode</button>
+                <video id="camera-preview"></video>
+                <canvas id="barcode-canvas"></canvas>
+            </section>
+
+            <section class="manual-search">
+                <input type="text" id="drug-input" placeholder="Enter Drug Name or NDC">
+                <button id="search-drug">Search</button>
+            </section>
+
+            <section class="drug-info">
+                <h2>Drug Information</h2>
+                <p id="drug-name">Name: <span>-</span></p>
+                <p id="drug-facts">Facts: <span>-</span></p>
+                <button id="set-reminder">Set Reminder</button>
+            </section>
+        </main>
     </div>
-    <script src="app.js"></script>
 </body>
 </html>

@@ -9,7 +9,7 @@ body {
     justify-content: center; /* Horizontally center content */
     align-items: center; /* Vertically center content */
     height: 100vh;
-    flex-direction: column; /* Allow content to stack */
+    flex-direction: column; /* Stack content vertically */
 }
 
 /* Header */
@@ -24,10 +24,10 @@ header h1 {
     margin: 0;
 }
 
-/* Main container to hold elements side by side */
+/* Main container to hold elements stacked vertically */
 .main-container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column; /* Stack elements vertically */
     justify-content: center; /* Center elements horizontally */
     align-items: center; /* Center elements vertically */
     width: 100%;

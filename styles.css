@@ -6,8 +6,8 @@ body {
     padding: 20px;
 }
 
-.container { 
-    display: flex; 
+.container {
+    display: flex;
 }
 
 .sidebar {
@@ -15,19 +15,20 @@ body {
     background: #3a2a1f;
     padding: 10px;
     height: 100vh;
+    overflow-y: auto;
 }
 
-.main { 
-    flex-grow: 1; 
-    padding: 20px; 
+.main {
+    flex-grow: 1;
+    padding: 20px;
 }
 
 .scanner-container, .manual-search {
     margin-bottom: 20px;
 }
 
-.hidden { 
-    display: none; 
+.hidden {
+    display: none;
 }
 
 button {

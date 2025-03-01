@@ -25,6 +25,33 @@
             margin-bottom: 20px;
         }
         .hidden { display: none; }
+
+        /* Chatbox Styling */
+        #chatbox {
+            background: #3a2a1f;
+            padding: 15px;
+            border-radius: 5px;
+            width: 300px;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+        }
+        #chat-messages {
+            height: 150px;
+            overflow-y: auto;
+            background: #2c1b0f;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        #message-input {
+            width: 80%;
+            padding: 5px;
+        }
+        #send-button {
+            padding: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -47,6 +74,15 @@
             <div id="drug-info"></div>
         </div>
     </div>
+
+    <!-- Chatbox Implemented with Smalltalk Backend -->
+    <section id="chatbox">
+        <h2>Chat with Your Provider</h2>
+        <div id="chat-messages"></div>
+        <input type="text" id="message-input" placeholder="Type a message...">
+        <button id="send-button">Send</button>
+    </section>
+
     <script>
         let darkMode = true;
 
@@ -121,6 +157,45 @@
             document.body.style.backgroundColor = darkMode ? "#2c1b0f" : "#888";
             document.body.style.color = darkMode ? "#a0e0ff" : "black";
         }
+
+        // Chatbox JavaScript
+        document.addEventListener("DOMContentLoaded", function () {
+            let chatMessages = document.getElementById("chat-messages");
+            let messageInput = document.getElementById("message-input");
+            let sendButton = document.getElementById("send-button");
+
+            function sendMessageToSmalltalk(message) {
+                fetch("http://localhost:8080", {
+                    method: "POST",
+                    body: message
+                }).then(() => fetchMessages());
+            }
+
+            function fetchMessages() {
+                fetch("http://localhost:8080")
+                    .then(response => response.text())
+                    .then(data => {
+                        chatMessages.innerHTML = "";
+                        let messages = data.split("\n");
+                        messages.forEach(msg => {
+                            let messageDiv = document.createElement("div");
+                            messageDiv.textContent = msg;
+                            chatMessages.appendChild(messageDiv);
+                        });
+                    });
+            }
+
+            sendButton.addEventListener("click", function () {
+                let messageText = messageInput.value.trim();
+                if (messageText) {
+                    sendMessageToSmalltalk(messageText);
+                    messageInput.value = "";
+                }
+            });
+
+            setInterval(fetchMessages, 3000);
+        });
     </script>
 </body>
 </html>
+

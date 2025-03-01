@@ -106,3 +106,43 @@ document.addEventListener("DOMContentLoaded", () => {
         medications.push(medicine);
     }
 });
+document.addEventListener("DOMContentLoaded", function () {
+    let chatMessages = document.getElementById("chat-messages");
+    let messageInput = document.getElementById("message-input");
+    let sendButton = document.getElementById("send-button");
+
+    // Function to send message to Smalltalk server
+    function sendMessageToSmalltalk(message) {
+        fetch("http://localhost:8080", {
+            method: "POST",
+            body: message
+        }).then(() => fetchMessages());
+    }
+
+    // Function to fetch messages from Smalltalk server
+    function fetchMessages() {
+        fetch("http://localhost:8080")
+            .then(response => response.text())
+            .then(data => {
+                chatMessages.innerHTML = "";
+                let messages = data.split("\n");
+                messages.forEach(msg => {
+                    let messageDiv = document.createElement("div");
+                    messageDiv.textContent = msg;
+                    chatMessages.appendChild(messageDiv);
+                });
+            });
+    }
+
+    // Event listener for sending messages
+    sendButton.addEventListener("click", function () {
+        let messageText = messageInput.value.trim();
+        if (messageText) {
+            sendMessageToSmalltalk(messageText);
+            messageInput.value = "";
+        }
+    });
+
+    // Auto-fetch messages every 3 seconds to update chatbox
+    setInterval(fetchMessages, 3000);
+});

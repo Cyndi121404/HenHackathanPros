@@ -1,0 +1,49 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f4f4f4;
+    color: #333;
+    text-align: center;
+}
+
+header {
+    background: #007bff;
+    color: white;
+    padding: 1em;
+}
+
+button {
+    font-size: 1.2em;
+    padding: 10px;
+    margin: 10px;
+    border: none;
+    background: #28a745;
+    color: white;
+    cursor: pointer;
+}
+
+button:focus {
+    outline: 2px solid yellow;
+}
+
+button:hover {
+    background: #218838;
+}
+
+textarea {
+    width: 80%;
+    height: 100px;
+    font-size: 1em;
+    margin: 10px 0;
+}
+
+#medicine-list {
+    list-style: none;
+    padding: 0;
+}
+
+.high-contrast {
+    background: black;
+    color: yellow;
+}

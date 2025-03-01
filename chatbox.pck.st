@@ -15,12 +15,17 @@ Object subclass: ChatServer [
     ]
 
     ChatServer >> handleRequest: request [
-        | response body |
+        | response body json |
+        
         request method = #POST ifTrue: [
-            messages add: (request contents asString).
+            json := NeoJSONReader fromString: request contents.
+            messages add: json.
         ].
-        body := ZnStringEntity text: (messages joinSeparatedBy: '\n').
+        
+        body := NeoJSONWriter toString: messages.
         response := ZnResponse ok: body.
+        response contentType: 'application/json'.
+        
         ^ response.
     ]
 ]

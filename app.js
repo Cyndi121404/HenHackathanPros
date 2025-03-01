@@ -50,8 +50,24 @@ document.addEventListener("DOMContentLoaded", () => {
         if (query) fetchDrugInfo(query);
     });
 
+    // Function to start the video preview
+    function startCamera() {
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;  // Use the video stream directly
+                video.style.display = "block"; // Show the video element
+            })
+            .catch(err => {
+                console.error("Error accessing webcam:", err);
+                alert("Failed to access webcam.");
+            });
+    }
+
     scanButton.addEventListener("click", () => {
-        video.style.display = "block";
+        // Start the camera preview when the scan button is clicked
+        startCamera();
+
+        // Initialize Quagga for barcode scanning
         Quagga.init({
             inputStream: { name: "Live", type: "LiveStream", target: video },
             decoder: { readers: ["ean_reader"] }
@@ -61,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         Quagga.onDetected(data => {
             Quagga.stop();
-            video.style.display = "none";
+            video.style.display = "none";  // Hide the video element after scanning
             let barcode = data.codeResult.code;
 
             // Display the barcode value on the page

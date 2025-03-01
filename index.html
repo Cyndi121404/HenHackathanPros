@@ -3,58 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medicine Reminder</title>
+    <title>Medicine Reminder Web App</title>
     <link rel="stylesheet" href="styles.css">
-    <script defer src="app.js"></script>
-    <script src="https://unpkg.com/quagga@0.12.1/dist/quagga.min.js"></script> <!-- QuaggaJS -->
+    <script src="https://unpkg.com/quagga@0.12.1/dist/quagga.min.js"></script>
 </head>
 <body>
-
     <header>
-        <h1>Medicine Reminder</h1>
-        <button id="toggle-contrast">Toggle High Contrast</button>
+        <h1>Medicine Reminder Web App</h1>
     </header>
 
-    <main>
-        <section id="scanner">
-            <h2>Scan Your Medicine</h2>
-            <button id="scan-btn">📷 Scan Barcode</button>
-            <div id="scanner-container">
-                <video id="scanner-preview" autoplay hidden></video>
-            </div>
-            <p id="scanned-barcode"></p>
-        </section>
+    <div id="scanner">
+        <h2>Scan Barcode</h2>
+        <button id="scan-btn">Start Scanning</button>
+        <div id="scanner-preview" hidden>
+            <video id="scanner-stream" width="100%" height="auto" style="border-radius: 12px; background-color: black;"></video>
+        </div>
+        <p id="scanned-barcode">Scanned Barcode: None</p>
+    </div>
 
-        <section id="manual-entry">
-            <h2>Enter Medicine Manually</h2>
-            <form id="manual-entry-form">
-                <input type="text" id="medicine-name" placeholder="Medicine Name" required>
-                <input type="text" id="manufacturer" placeholder="Manufacturer" required>
-                <input type="text" id="dosage-form" placeholder="Dosage Form" required>
-                <input type="text" id="barcode" placeholder="Barcode (Optional)">
-                <textarea id="notes" placeholder="Additional Notes (Optional)"></textarea>
-                <button type="submit">Add Medicine</button>
-            </form>
-        </section>
+    <div id="manual-entry">
+        <h2>Or Enter Medicine Information</h2>
+        <form id="manual-entry-form">
+            <label for="medicine-name">Medicine Name or Code:</label>
+            <input type="text" id="medicine-name" name="medicine-name" placeholder="Enter name or code" required>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
 
-        <section id="medicines">
-            <h2>Your Medicines</h2>
-            <ul id="medicine-list">
-                <!-- Medicine items will be added here dynamically -->
-            </ul>
-        </section>
+    <div id="medicine-details">
+        <h2>Medicine Information</h2>
+        <p id="medicine-info">No information available yet.</p>
+    </div>
 
-        <section id="notifications">
-            <h2>Notifications</h2>
-            <button id="enable-notifications">Enable Notifications</button>
-        </section>
-
-        <section id="side-effects">
-            <h2>Log Side Effects</h2>
-            <textarea id="side-effect-input" placeholder="Describe any side effects..."></textarea>
-            <button id="submit-side-effect">Submit</button>
-        </section>
-    </main>
-
+    <script src="app.js"></script>
 </body>
 </html>

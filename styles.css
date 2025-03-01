@@ -1,49 +1,104 @@
+/* Global Styles */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background: #f4f4f4;
-    color: #333;
-    text-align: center;
-}
-
-header {
-    background: #007bff;
-    color: white;
-    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f4f4f4;
 }
 
 button {
-    font-size: 1.2em;
-    padding: 10px;
-    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
     border: none;
-    background: #28a745;
-    color: white;
     cursor: pointer;
+    border-radius: 12px;  /* Rounded buttons */
 }
 
-button:focus {
-    outline: 2px solid yellow;
+h1, h2, h3 {
+    color: #333;
+}
+
+input, textarea {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 8px;  /* Rounded input fields */
+}
+
+/* Accessibility Version - Greyscale */
+body.high-contrast {
+    filter: grayscale(100%);
+    background-color: #f0f0f0;
+}
+
+body.high-contrast button,
+body.high-contrast input,
+body.high-contrast textarea {
+    filter: grayscale(100%);
+    background-color: #ccc;  /* Greyscale button background */
+    color: #333;
+}
+
+/* Main Version - Light Blue and Dark Brown */
+body {
+    background-color: #e6f7ff; /* Light blue */
+}
+
+header {
+    background-color: #3e2723;  /* Dark brown */
+    padding: 10px;
+    width: 100%;
+    color: white;
+    text-align: center;
+}
+
+button {
+    background-color: #81d4fa; /* Light blue button background */
+    color: #3e2723;  /* Dark brown text */
 }
 
 button:hover {
-    background: #218838;
+    background-color: #4fc3f7; /* Darker blue for hover effect */
 }
 
-textarea {
-    width: 80%;
-    height: 100px;
-    font-size: 1em;
-    margin: 10px 0;
+button:active {
+    background-color: #29b6f6; /* Active button color */
 }
 
-#medicine-list {
-    list-style: none;
-    padding: 0;
+input, textarea {
+    border: 1px solid #3e2723;  /* Dark brown border for inputs */
 }
 
-.high-contrast {
-    background: black;
-    color: yellow;
+/* Scanner and Form Section Styling */
+#scanner, #manual-entry, #medicine-details {
+    margin: 20px;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#scanner {
+    background-color: #ffffff;
+}
+
+#manual-entry form input, #manual-entry form button {
+    width: 100%;
+    max-width: 400px;
+}
+
+#medicine-details {
+    max-width: 600px;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#medicine-info {
+    margin-top: 20px;
 }

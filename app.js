@@ -1,25 +1,17 @@
 document.addEventListener("DOMContentLoaded", () => {
     const scanBtn = document.getElementById("scan-btn");
-    const notificationBtn = document.getElementById("enable-notifications");
-    const submitSideEffectBtn = document.getElementById("submit-side-effect");
-    const contrastToggle = document.getElementById("toggle-contrast");
-    const body = document.body;
+    const scannerPreview = document.getElementById("scanner-preview");
     const scannedBarcode = document.getElementById("scanned-barcode");
-    const medicineList = document.getElementById("medicine-list");
-    const medicineDetails = document.getElementById("medicine-details");
+    const video = document.getElementById("scanner-stream");
     const manualEntryForm = document.getElementById("manual-entry-form");
+    const medicineInfo = document.getElementById("medicine-info");
 
-    // Toggle high contrast mode for accessibility
-    contrastToggle.addEventListener("click", () => {
-        body.classList.toggle("high-contrast");
-    });
+    // Button to start barcode scanning
+    scanBtn.addEventListener("click", startScanner);
 
-    // Barcode Scanner Setup (QuaggaJS)
-    scanBtn.addEventListener("click", () => {
-        startScanner();
-    });
-
+    // Function to start scanning using Quagga
     function startScanner() {
+        // Initialize the scanner
         Quagga.init({
             inputStream: {
                 type: "LiveStream",
@@ -28,121 +20,76 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             },
             decoder: {
-                readers: ["ean_reader", "upc_reader"]
+                readers: ["ean_reader", "upc_reader", "code_128_reader", "ean_13_reader"]
             }
-        }, function (err) {
+        }, function(err) {
             if (err) {
-                console.log("Error initializing scanner: ", err);
+                console.log("Error initializing scanner:", err);
                 return;
             }
             Quagga.start();
-            document.getElementById("scanner-preview").hidden = false; // Show camera stream
+            scannerPreview.hidden = false; // Show video preview
         });
 
+        // Listen for detected barcode
         Quagga.onDetected(function(result) {
             const barcode = result.codeResult.code;
             scannedBarcode.textContent = `Scanned Barcode: ${barcode}`;
-            storeMedicine(barcode); // Store scanned medicine
-            fetchMedicineInfo(barcode); // Fetch details from OpenFDA API
-            Quagga.stop(); // Stop scanner once a barcode is detected
+            fetchMedicineInfo(barcode); // Fetch information from OpenFDA API
+            Quagga.stop();  // Stop the scanner once a barcode is detected
         });
     }
 
-    // Store Medicine in LocalStorage (Simple Database)
-    function storeMedicine(barcode, name, manufacturer, dosageForm, notes) {
-        const medicines = JSON.parse(localStorage.getItem("medicines")) || [];
-        const medicine = { barcode, name, manufacturer, dosageForm, notes };
-        
-        if (!medicines.some(m => m.barcode === barcode)) {
-            medicines.push(medicine);
-            localStorage.setItem("medicines", JSON.stringify(medicines));
-            updateMedicineList();
-        }
-    }
-
-    // Fetch Medicine Info from OpenFDA API
-    async function fetchMedicineInfo(barcode) {
+    // Fetch medicine info from OpenFDA API by name or barcode
+    async function fetchMedicineInfo(query) {
         try {
-            const apiUrl = `https://api.fda.gov/drug/ndc.json?search=product_ndc:${barcode}&limit=1`;
+            let apiUrl = '';
+            if (isNaN(query)) {
+                // If it's not a number, it's a name
+                apiUrl = `https://api.fda.gov/drug/ndc.json?search=brand_name:"${query}"&limit=1`;
+            } else {
+                // If it's a number, treat it as a barcode (product_ndc)
+                apiUrl = `https://api.fda.gov/drug/ndc.json?search=product_ndc:"${query}"&limit=1`;
+            }
+
             const response = await fetch(apiUrl);
             const data = await response.json();
-            
+
             if (data.results && data.results.length > 0) {
                 const medicine = data.results[0];
                 displayMedicineDetails(medicine);
             } else {
-                alert("No data found for this barcode.");
+                medicineInfo.textContent = "No data found for this medicine.";
             }
         } catch (error) {
-            console.error("Error fetching data from OpenFDA: ", error);
+            console.error("Error fetching data from OpenFDA:", error);
+            medicineInfo.textContent = "Error fetching medicine data.";
         }
     }
 
-    // Display Medicine Details from OpenFDA
+    // Display the medicine details on the page
     function displayMedicineDetails(medicine) {
         const name = medicine.openfda.brand_name ? medicine.openfda.brand_name[0] : "Unknown";
         const manufacturer = medicine.openfda.manufacturer_name ? medicine.openfda.manufacturer_name[0] : "Unknown Manufacturer";
         const dosageForm = medicine.dosage_form ? medicine.dosage_form : "Unknown dosage form";
-        
-        medicineDetails.innerHTML = `
-            <h3>Medicine Information:</h3>
+        const productNdc = medicine.product_ndc ? medicine.product_ndc[0] : "N/A";
+
+        medicineInfo.innerHTML = `
             <p><strong>Brand Name:</strong> ${name}</p>
             <p><strong>Manufacturer:</strong> ${manufacturer}</p>
             <p><strong>Dosage Form:</strong> ${dosageForm}</p>
+            <p><strong>Product NDC:</strong> ${productNdc}</p>
         `;
     }
 
-    // Update the list of stored medicines
-    function updateMedicineList() {
-        const medicines = JSON.parse(localStorage.getItem("medicines")) || [];
-        medicineList.innerHTML = medicines.map(medicine => `
-            <li>
-                <strong>Medicine:</strong> ${medicine.name} <br>
-                <strong>Manufacturer:</strong> ${medicine.manufacturer} <br>
-                <strong>Dosage:</strong> ${medicine.dosageForm} <br>
-                <strong>Barcode:</strong> ${medicine.barcode || "N/A"} <br>
-                <strong>Notes:</strong> ${medicine.notes || "No notes"} 
-            </li>
-        `).join("");
-    }
-
-    // Handle Manual Medicine Entry
+    // Handle the manual entry form submission
     manualEntryForm.addEventListener("submit", (event) => {
         event.preventDefault();
-        
-        const name = document.getElementById("medicine-name").value;
-        const manufacturer = document.getElementById("manufacturer").value;
-        const dosageForm = document.getElementById("dosage-form").value;
-        const barcode = document.getElementById("barcode").value;
-        const notes = document.getElementById("notes").value;
-        
-        if (name && manufacturer && dosageForm) {
-            storeMedicine(barcode, name, manufacturer, dosageForm, notes);
-            // Clear the form
-            manualEntryForm.reset();
+        const query = document.getElementById("medicine-name").value.trim();
+        if (query) {
+            fetchMedicineInfo(query); // Fetch info based on entered name or code
         } else {
-            alert("Please fill in all required fields.");
+            medicineInfo.textContent = "Please enter a valid name or code.";
         }
     });
-
-    // Enable Push Notifications
-    notificationBtn.addEventListener("click", () => {
-        Notification.requestPermission().then(permission => {
-            if (permission === "granted") {
-                new Notification("Medicine reminders enabled!");
-            }
-        });
-    });
-
-    // Log Side Effects
-    submitSideEffectBtn.addEventListener("click", () => {
-        const sideEffectInput = document.getElementById("side-effect-input").value;
-        if (sideEffectInput.trim()) {
-            alert(`Side effect logged: ${sideEffectInput}`);
-            document.getElementById("side-effect-input").value = ""; // Clear input
-        }
-    });
-
-    // Initialize the medicine list on load
-    updateMedicineList();
 });

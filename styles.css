@@ -9,7 +9,7 @@ body {
     justify-content: center; /* Horizontally center content */
     align-items: center; /* Vertically center content */
     height: 100vh;
-    flex-direction: column; /* Stack content vertically */
+    flex-direction: column; /* Allow content to stack */
 }
 
 /* Header */
@@ -24,12 +24,12 @@ header h1 {
     margin: 0;
 }
 
-/* Main container to hold elements stacked vertically */
+/* Main container to hold elements stacked */
 .main-container {
     display: flex;
     flex-direction: column; /* Stack elements vertically */
-    justify-content: center; /* Center elements horizontally */
-    align-items: center; /* Center elements vertically */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
     width: 100%;
     max-width: 1200px; /* Limit the max width of the main content */
     padding: 20px;
@@ -40,15 +40,15 @@ header h1 {
     background: #2a1d16;
     padding: 10px;
     border-radius: 10px;
-    width: 30%; /* Adjust width for side-by-side layout */
+    width: 80%; /* Adjust width for side-by-side layout */
     max-width: 400px;
-    margin-right: 20px; /* Add some space between the sidebar and chatbox */
+    margin-bottom: 20px; /* Add space between the sidebar and chatbox */
 }
 
 /* Chatbox Styling */
 .chatbox {
     position: relative;
-    width: 30%; /* Adjust width for side-by-side layout */
+    width: 80%; /* Adjust width for side-by-side layout */
     height: 400px;
     background: white;
     border: 1px solid #ccc;
@@ -64,7 +64,7 @@ header h1 {
 .scanner-container {
     margin: 15px 0;
     text-align: center;
-    width: 30%; /* Adjust width for side-by-side layout */
+    width: 80%; /* Adjust width for side-by-side layout */
     max-width: 300px;
     margin-bottom: 20px; /* Add space below scanner */
 }

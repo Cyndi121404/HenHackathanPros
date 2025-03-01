@@ -13,19 +13,26 @@
         <h1>DoseDoodle</h1>
     </header>
 
-    <div class="main-container"> <!-- Add a main-container div to wrap all features -->
-        <button id="toggle-theme">🌙 Toggle Accessibility</button>
+    <div class="main-container">
+        <!-- Sidebar for Search History -->
+        <div class="sidebar">
+            <h2>Search History</h2>
+            <ul id="history-list"></ul>
+        </div>
 
+        <!-- Scanner Section -->
         <div class="scanner-container">
             <button id="start-scan">📷 Scan Barcode</button>
             <video id="camera-preview"></video>
         </div>
 
+        <!-- Manual Search Section -->
         <div class="manual-search">
             <input type="text" id="drug-input" placeholder="Enter Drug Name or NDC">
             <button id="search-drug">🔍 Search</button>
         </div>
 
+        <!-- Drug Info Section -->
         <div class="drug-info">
             <h2>Drug Information</h2>
             <p id="drug-name">Name: <span>-</span></p>
@@ -33,13 +40,10 @@
             <button id="set-reminder">⏰ Set Reminder</button>
         </div>
 
-        <div class="sidebar">
-            <h2>Search History</h2>
-            <ul id="history-list"></ul>
-        </div>
-
+        <!-- Chat Provider Button -->
         <button id="chat-provider-button">💬 Chat with Provider</button>
 
+        <!-- Chatbox -->
         <div id="chatbox" class="hidden">
             <div class="chat-header">
                 <h2>Chat with Assistant</h2>
@@ -51,6 +55,6 @@
                 <button id="send-button">Send</button>
             </div>
         </div>
-    </div> <!-- Close the main-container -->
+    </div>
 </body>
 </html>

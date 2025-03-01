@@ -10,6 +10,7 @@
 <body>
     <header>
         <h1>Medicine Reminder Web App</h1>
+        <button id="toggle-accessibility">Toggle High Contrast Mode</button>
     </header>
 
     <div id="scanner">
@@ -28,6 +29,11 @@
             <input type="text" id="medicine-name" name="medicine-name" placeholder="Enter name or code" required>
             <button type="submit">Submit</button>
         </form>
+    </div>
+
+    <div id="medicine-list">
+        <h2>Your Medications</h2>
+        <ul id="medicines"></ul>
     </div>
 
     <div id="medicine-details">

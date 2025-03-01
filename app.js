@@ -4,7 +4,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const scannedBarcode = document.getElementById("scanned-barcode");
     const video = document.getElementById("scanner-stream");
     const manualEntryForm = document.getElementById("manual-entry-form");
+    const medicinesList = document.getElementById("medicines");
     const medicineInfo = document.getElementById("medicine-info");
+    const toggleAccessibilityBtn = document.getElementById("toggle-accessibility");
+
+    // List to store medications
+    let medications = [];
+
+    // Toggle accessibility mode (high contrast greyscale)
+    toggleAccessibilityBtn.addEventListener("click", () => {
+        document.body.classList.toggle("high-contrast");
+    });
 
     // Button to start barcode scanning
     scanBtn.addEventListener("click", startScanner);
@@ -57,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (data.results && data.results.length > 0) {
                 const medicine = data.results[0];
-                displayMedicineDetails(medicine);
+                addMedicineToList(medicine);
             } else {
                 medicineInfo.textContent = "No data found for this medicine.";
             }
@@ -67,13 +77,24 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Display the medicine details on the page
-    function displayMedicineDetails(medicine) {
+    // Add the medicine to the list and display its details
+    function addMedicineToList(medicine) {
         const name = medicine.openfda.brand_name ? medicine.openfda.brand_name[0] : "Unknown";
         const manufacturer = medicine.openfda.manufacturer_name ? medicine.openfda.manufacturer_name[0] : "Unknown Manufacturer";
         const dosageForm = medicine.dosage_form ? medicine.dosage_form : "Unknown dosage form";
         const productNdc = medicine.product_ndc ? medicine.product_ndc[0] : "N/A";
 
+        const medicineItem = document.createElement("li");
+        medicineItem.innerHTML = `
+            <p><strong>Brand Name:</strong> ${name}</p>
+            <p><strong>Manufacturer:</strong> ${manufacturer}</p>
+            <p><strong>Dosage Form:</strong> ${dosageForm}</p>
+            <p><strong>Product NDC:</strong> ${productNdc}</p>
+            <button onclick="deleteMedicine('${productNdc}')">Delete</button>
+        `;
+
+        medicines.push(medicine);
+        medicinesList.appendChild(medicineItem);
         medicineInfo.innerHTML = `
             <p><strong>Brand Name:</strong> ${name}</p>
             <p><strong>Manufacturer:</strong> ${manufacturer}</p>
@@ -82,14 +103,9 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
     }
 
-    // Handle the manual entry form submission
-    manualEntryForm.addEventListener("submit", (event) => {
-        event.preventDefault();
-        const query = document.getElementById("medicine-name").value.trim();
-        if (query) {
-            fetchMedicineInfo(query); // Fetch info based on entered name or code
-        } else {
-            medicineInfo.textContent = "Please enter a valid name or code.";
-        }
-    });
+    // Function to delete a medicine from the list
+    window.deleteMedicine = function(ndc) {
+        medicines = medications.filter(med => med.product_ndc[0] !== ndc);
+        renderMedicineList();
+    };
 });

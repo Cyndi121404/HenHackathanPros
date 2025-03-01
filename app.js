@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const themeButton = document.getElementById("toggle-theme");
     const chatbox = document.getElementById("chatbox");
     const chatToggle = document.getElementById("chat-toggle");
+    const chatContent = document.getElementById("chat-content");
 
     let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
 
@@ -118,46 +119,28 @@ document.addEventListener("DOMContentLoaded", () => {
     let messageInput = document.getElementById("message-input");
     let sendButton = document.getElementById("send-button");
 
-    if (!chatMessages || !messageInput || !sendButton) {
-        console.error("Chatbox elements not found. Make sure they are in the HTML.");
-        return;
-    }
-
-    function sendMessageToSmalltalk(message) {
-        fetch("http://localhost:8080", {
-            method: "POST",
-            body: message
-        }).then(() => fetchMessages());
-    }
-
-    function fetchMessages() {
-        fetch("http://localhost:8080")
-            .then(response => response.text())
-            .then(data => {
-                chatMessages.innerHTML = "";
-                let messages = data.split("\n");
-                messages.forEach(msg => {
-                    let messageDiv = document.createElement("div");
-                    messageDiv.textContent = msg;
-                    chatMessages.appendChild(messageDiv);
-                });
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            })
-            .catch(error => console.error("Error fetching messages:", error));
-    }
-
-    sendButton.addEventListener("click", function () {
+    function sendMessage() {
         let messageText = messageInput.value.trim();
-        if (messageText) {
-            sendMessageToSmalltalk(messageText);
-            messageInput.value = "";
-        }
-    });
+        if (messageText === "") return;
 
-    setInterval(fetchMessages, 3000);
+        const messageDiv = document.createElement("div");
+        messageDiv.classList.add("message");
+        messageDiv.textContent = messageText;
+        chatMessages.appendChild(messageDiv);
+
+        messageInput.value = "";
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    sendButton.addEventListener("click", sendMessage);
+    messageInput.addEventListener("keypress", event => {
+        if (event.key === "Enter") sendMessage();
+    });
 
     // --- Chatbox Minimize/Expand ---
     chatToggle.addEventListener("click", () => {
         chatbox.classList.toggle("minimized");
+        chatContent.style.display = chatbox.classList.contains("minimized") ? "none" : "block";
+        chatToggle.textContent = chatbox.classList.contains("minimized") ? "▲ Chat" : "▼ Chat";
     });
 });

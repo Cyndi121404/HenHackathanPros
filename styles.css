@@ -108,68 +108,73 @@ video {
     color: #ddd;
 }
 
-.chatbox {
+/* Chatbox Styling */
+#chatbox {
     position: fixed;
     bottom: 20px;
     right: 20px;
     width: 300px;
+    height: 400px;
     background: white;
-    border: 2px solid #ccc;
+    border: 1px solid #ccc;
     border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
+    transition: transform 0.3s ease;
     overflow: hidden;
 }
 
-.chatbox h2 {
+#chatbox.minimized {
+    transform: translateY(360px);
+}
+
+#chat-toggle {
     background: #007bff;
     color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 100%;
     text-align: center;
-    margin: 0;
-    padding: 10px;
+    border-radius: 10px 10px 0 0;
+    position: absolute;
+    bottom: 100%;
+    left: 0;
 }
 
-.chat-messages {
-    height: 250px;
+#chat-messages {
+    flex-grow: 1;
     overflow-y: auto;
     padding: 10px;
-    display: flex;
-    flex-direction: column;
+    border-bottom: 1px solid #ccc;
 }
 
-.chat-messages div {
+.message {
     background: #f1f1f1;
-    padding: 8px;
-    margin: 4px 0;
+    padding: 5px 10px;
+    margin: 5px 0;
     border-radius: 5px;
-    max-width: 80%;
 }
 
-.chat-input {
-    display: flex;
-    padding: 10px;
-    background: #eee;
-    border-top: 1px solid #ccc;
-}
-
-.chat-input input {
-    flex: 1;
-    padding: 8px;
+#message-input {
+    width: 75%;
+    padding: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
-.chat-input button {
-    margin-left: 5px;
-    padding: 8px 12px;
+#send-button {
+    width: 20%;
+    padding: 5px;
     background: #007bff;
     color: white;
     border: none;
     cursor: pointer;
-    border-radius: 5px;
 }
 
-.chat-input button:hover {
-    background: #0056b3;
+/* Chatbox Toggle Visibility */
+#chatbox.minimized #chat-toggle {
+    bottom: 0;
 }

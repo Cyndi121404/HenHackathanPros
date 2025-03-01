@@ -38,15 +38,18 @@
             <ul id="history-list"></ul>
         </div>
 
-        <div class="chatbox">
-            <h2>Chat with Assistant</h2>
-            <div id="chat-messages" class="chat-messages"></div>
-            <div class="chat-input">
-                <input type="text" id="message-input" placeholder="Type a message...">
-                <button id="send-button">Send</button>
+        <!-- Chatbox Section -->
+        <div id="chatbox" class="minimized">
+            <button id="chat-toggle">▲ Chat</button>
+            <div id="chat-content">
+                <div id="chat-messages" class="chat-messages"></div>
+                <div class="chat-input">
+                    <input type="text" id="message-input" placeholder="Type a message...">
+                    <button id="send-button">Send</button>
+                </div>
             </div>
         </div>
-        
+
     </div>
 </body>
 </html>

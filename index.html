@@ -9,44 +9,41 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Drug Info Scanner</h1>
-        </header>
+    <header>
+        <h1>Drug Info Scanner</h1>
+    </header>
 
-        <button id="toggle-theme">🌙 Toggle Accessibility</button>
+    <button id="toggle-theme">🌙 Toggle Accessibility</button>
 
-        <div class="scanner-container">
-            <button id="start-scan">📷 Scan Barcode</button>
-            <video id="camera-preview"></video>
+    <div class="scanner-container">
+        <button id="start-scan">📷 Scan Barcode</button>
+        <video id="camera-preview"></video>
+    </div>
+
+    <div class="manual-search">
+        <input type="text" id="drug-input" placeholder="Enter Drug Name or NDC">
+        <button id="search-drug">🔍 Search</button>
+    </div>
+
+    <div class="drug-info">
+        <h2>Drug Information</h2>
+        <p id="drug-name">Name: <span>-</span></p>
+        <p id="drug-facts">Facts: <span>-</span></p>
+        <button id="set-reminder">⏰ Set Reminder</button>
+    </div>
+
+    <div class="sidebar">
+        <h2>Search History</h2>
+        <ul id="history-list"></ul>
+    </div>
+
+    <div class="chatbox">
+        <h2>Chat with Assistant</h2>
+        <div id="chat-messages" class="chat-messages"></div>
+        <div class="chat-input">
+            <input type="text" id="message-input" placeholder="Type a message...">
+            <button id="send-button">Send</button>
         </div>
-
-        <div class="manual-search">
-            <input type="text" id="drug-input" placeholder="Enter Drug Name or NDC">
-            <button id="search-drug">🔍 Search</button>
-        </div>
-
-        <div class="drug-info">
-            <h2>Drug Information</h2>
-            <p id="drug-name">Name: <span>-</span></p>
-            <p id="drug-facts">Facts: <span>-</span></p>
-            <button id="set-reminder">⏰ Set Reminder</button>
-        </div>
-
-        <div class="sidebar">
-            <h2>Search History</h2>
-            <ul id="history-list"></ul>
-        </div>
-
-        <div class="chatbox">
-            <h2>Chat with Assistant</h2>
-            <div id="chat-messages" class="chat-messages"></div>
-            <div class="chat-input">
-                <input type="text" id="message-input" placeholder="Type a message...">
-                <button id="send-button">Send</button>
-            </div>
-        </div>
-        
     </div>
 </body>
 </html>

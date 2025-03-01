@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const searchButton = document.getElementById("search-drug");
     const drugNameElem = document.querySelector("#drug-name span");
     const drugFactsElem = document.querySelector("#drug-facts span");
+    const drugSideEffectsElem = document.querySelector("#drug-side-effects span");
+    const dosingScheduleElem = document.querySelector("#dosing-schedule span");
     const historyList = document.getElementById("history-list");
     const reminderButton = document.getElementById("set-reminder");
     const themeButton = document.getElementById("toggle-theme");
@@ -34,9 +36,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 let drug = data.results[0];
                 let name = drug.openfda.brand_name ? drug.openfda.brand_name[0] : "Unknown";
                 let facts = drug.indications_and_usage ? drug.indications_and_usage[0] : "No details found";
+                let sideEffects = drug.adverse_reactions ? drug.adverse_reactions[0] : "No side effects listed";
+                let dosingSchedule = drug.dosage_and_administration ? drug.dosage_and_administration[0] : "No dosing schedule available";
 
                 drugNameElem.textContent = name;
                 drugFactsElem.textContent = facts;
+                drugSideEffectsElem.textContent = sideEffects;
+                dosingScheduleElem.textContent = dosingSchedule;
 
                 if (!searchHistory.includes(query)) {
                     searchHistory.push(query);
@@ -48,6 +54,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.error("Error fetching drug info:", error);
                 drugNameElem.textContent = "Not Found";
                 drugFactsElem.textContent = "No data available";
+                drugSideEffectsElem.textContent = "No data available";
+                dosingScheduleElem.textContent = "No data available";
             });
     }
 
@@ -71,16 +79,23 @@ document.addEventListener("DOMContentLoaded", () => {
         video.style.display = "block";
         Quagga.init({
             inputStream: { name: "Live", type: "LiveStream", target: video },
-            inputStream: { name: "Live", type: "LiveStream", target: video },
             decoder: { readers: ["ean_reader"] }
         }, err => {
             if (!err) Quagga.start();
         });
 
         Quagga.onDetected(data => {
+            let barcode = data.codeResult.code;
+            console.log("Barcode Detected:", barcode); // Display barcode number in console
+
+            // Update the live barcode number on the page
+            let liveBarcodeElem = document.getElementById("live-barcode");
+            if (liveBarcodeElem) {
+                liveBarcodeElem.textContent = `Detected Barcode: ${barcode}`;
+            }
+
             Quagga.stop();
             video.style.display = "none";
-            let barcode = data.codeResult.code;
             fetchDrugInfo(barcode);
         });
     });

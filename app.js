@@ -13,7 +13,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Toggle accessibility mode (high contrast greyscale)
     toggleAccessibilityBtn.addEventListener("click", () => {
-        document.body.classList.toggle("high-contrast");
+        const isHighContrast = document.body.classList.toggle("high-contrast");
+        toggleAccessibilityBtn.textContent = isHighContrast 
+            ? "Accessibility Mode: Toggle On" 
+            : "Accessibility Mode: Toggle Off";
     });
 
     // Button to start barcode scanning
@@ -93,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <button onclick="deleteMedicine('${productNdc}')">Delete</button>
         `;
 
-        medicines.push(medicine);
+        medications.push(medicine);
         medicinesList.appendChild(medicineItem);
         medicineInfo.innerHTML = `
             <p><strong>Brand Name:</strong> ${name}</p>
@@ -105,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Function to delete a medicine from the list
     window.deleteMedicine = function(ndc) {
-        medicines = medications.filter(med => med.product_ndc[0] !== ndc);
+        medications = medications.filter(med => med.product_ndc[0] !== ndc);
         renderMedicineList();
     };
 });

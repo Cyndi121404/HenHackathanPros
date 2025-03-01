@@ -126,3 +126,24 @@ input, textarea {
 #medicines ul li button:hover {
     background-color: #e53935;  /* Darker red on hover */
 }
+
+/* Accessibility Mode Button Positioning */
+#toggle-accessibility {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    font-size: 16px;
+    background-color: #ffeb3b;  /* Yellow for visibility */
+    color: #3e2723;
+    padding: 15px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+#toggle-accessibility:hover {
+    background-color: #ffca28;
+}
+
+#toggle-accessibility:active {
+    background-color: #f57f17;
+}

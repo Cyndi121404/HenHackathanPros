@@ -6,10 +6,10 @@ body {
     margin: 0;
     padding: 0;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start; /* Aligns the items to the left */
+    align-items: flex-start; /* Aligns the items to the top */
     height: 100vh;
-    flex-direction: column;
+    flex-direction: row; /* Arrange content in a row */
 }
 
 /* Header */
@@ -113,32 +113,29 @@ video {
     border: 1px solid #ccc;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    display: none;
+    display: flex;
     flex-direction: column;
+    transition: transform 0.3s ease;
     overflow: hidden;
 }
 
-#chatbox.visible {
-    display: flex;
+#chatbox.minimized {
+    transform: translateY(360px);
 }
 
-.chat-header {
+#chat-toggle {
     background: #007bff;
     color: white;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-}
-
-#chat-minimize-button {
-    background: none;
     border: none;
-    color: white;
+    padding: 5px 10px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 14px;
+    width: 100%;
+    text-align: center;
+    border-radius: 10px 10px 0 0;
+    position: absolute;
+    bottom: 100%;
+    left: 0;
 }
 
 #chat-messages {
@@ -171,6 +168,7 @@ video {
     cursor: pointer;
 }
 
-.hidden {
-    display: none;
+/* Chatbox Toggle Visibility */
+#chatbox.minimized #chat-toggle {
+    bottom: 0;
 }

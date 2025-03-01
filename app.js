@@ -5,16 +5,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const searchButton = document.getElementById("search-drug");
     const drugNameElem = document.querySelector("#drug-name span");
     const drugFactsElem = document.querySelector("#drug-facts span");
-    const drugSideEffectsElem = document.querySelector("#drug-side-effects span");
-    const dosingScheduleElem = document.querySelector("#dosing-schedule span");
     const historyList = document.getElementById("history-list");
     const reminderButton = document.getElementById("set-reminder");
     const themeButton = document.getElementById("toggle-theme");
     const chatbox = document.getElementById("chatbox");
-    const chatToggle = document.getElementById("chat-toggle");
-    const chatContent = document.getElementById("chat-content");
+    const chatMessages = document.getElementById("chat-messages");
+    const messageInput = document.getElementById("message-input");
+    const sendButton = document.getElementById("send-button");
+    const chatToggleButton = document.getElementById("chat-toggle");
 
     let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
+    let chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || [];
 
     function updateHistory() {
         historyList.innerHTML = "";
@@ -24,6 +25,17 @@ document.addEventListener("DOMContentLoaded", () => {
             li.addEventListener("click", () => fetchDrugInfo(drug));
             historyList.appendChild(li);
         });
+    }
+
+    function updateChatHistory() {
+        chatMessages.innerHTML = "";
+        chatHistory.forEach(msg => {
+            const messageDiv = document.createElement("div");
+            messageDiv.classList.add("message");
+            messageDiv.textContent = msg;
+            chatMessages.appendChild(messageDiv);
+        });
+        chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
     function fetchDrugInfo(query) {
@@ -37,13 +49,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 let drug = data.results[0];
                 let name = drug.openfda.brand_name ? drug.openfda.brand_name[0] : "Unknown";
                 let facts = drug.indications_and_usage ? drug.indications_and_usage[0] : "No details found";
-                let sideEffects = drug.adverse_reactions ? drug.adverse_reactions[0] : "No side effects listed";
-                let dosingSchedule = drug.dosage_and_administration ? drug.dosage_and_administration[0] : "No dosing schedule available";
 
                 drugNameElem.textContent = name;
                 drugFactsElem.textContent = facts;
-                drugSideEffectsElem.textContent = sideEffects;
-                dosingScheduleElem.textContent = dosingSchedule;
 
                 if (!searchHistory.includes(query)) {
                     searchHistory.push(query);
@@ -55,8 +63,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.error("Error fetching drug info:", error);
                 drugNameElem.textContent = "Not Found";
                 drugFactsElem.textContent = "No data available";
-                drugSideEffectsElem.textContent = "No data available";
-                dosingScheduleElem.textContent = "No data available";
             });
     }
 
@@ -86,17 +92,14 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         Quagga.onDetected(data => {
-            let barcode = data.codeResult.code;
-            console.log("Barcode Detected:", barcode); // Display barcode number in console
-
-            // Update the live barcode number on the page
-            let liveBarcodeElem = document.getElementById("live-barcode");
-            if (liveBarcodeElem) {
-                liveBarcodeElem.textContent = `Detected Barcode: ${barcode}`;
-            }
-
             Quagga.stop();
             video.style.display = "none";
+            
+            // Stop the camera stream
+            let tracks = video.srcObject.getTracks();
+            tracks.forEach(track => track.stop());
+
+            let barcode = data.codeResult.code;
             fetchDrugInfo(barcode);
         });
     });
@@ -127,24 +130,14 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.classList.toggle("grayscale");
     });
 
-    updateHistory();
-
-    // --- Chatbox Functionality ---
-    let chatMessages = document.getElementById("chat-messages");
-    let messageInput = document.getElementById("message-input");
-    let sendButton = document.getElementById("send-button");
-
     function sendMessage() {
         let messageText = messageInput.value.trim();
         if (messageText === "") return;
 
-        const messageDiv = document.createElement("div");
-        messageDiv.classList.add("message");
-        messageDiv.textContent = messageText;
-        chatMessages.appendChild(messageDiv);
-
+        chatHistory.push(messageText);
+        localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
+        updateChatHistory();
         messageInput.value = "";
-        chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
     sendButton.addEventListener("click", sendMessage);
@@ -152,10 +145,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (event.key === "Enter") sendMessage();
     });
 
-    // --- Chatbox Minimize/Expand ---
-    chatToggle.addEventListener("click", () => {
+    chatToggleButton.addEventListener("click", () => {
         chatbox.classList.toggle("minimized");
-        chatContent.style.display = chatbox.classList.contains("minimized") ? "none" : "block";
-        chatToggle.textContent = chatbox.classList.contains("minimized") ? "▲ Chat" : "▼ Chat";
     });
+
+    updateHistory();
+    updateChatHistory();
 });

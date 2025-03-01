@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicine Reminder</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="app.js"></script>
+</head>
+<body>
+
+    <header>
+        <h1>Medicine Reminder</h1>
+        <button id="toggle-contrast">Toggle High Contrast</button>
+    </header>
+
+    <main>
+        <section id="scanner">
+            <h2>Scan Your Medicine</h2>
+            <button id="scan-btn">📷 Scan Barcode</button>
+            <video id="scanner-preview" autoplay hidden></video>
+        </section>
+
+        <section id="medicines">
+            <h2>Your Medicines</h2>
+            <ul id="medicine-list">
+                <!-- Medicine items will be added here dynamically -->
+            </ul>
+        </section>
+
+        <section id="notifications">
+            <h2>Notifications</h2>
+            <button id="enable-notifications">Enable Notifications</button>
+        </section>
+
+        <section id="side-effects">
+            <h2>Log Side Effects</h2>
+            <textarea id="side-effect-input" placeholder="Describe any side effects..."></textarea>
+            <button id="submit-side-effect">Submit</button>
+        </section>
+    </main>
+
+</body>
+</html>

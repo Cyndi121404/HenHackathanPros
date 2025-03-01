@@ -7,52 +7,58 @@ body {
     padding: 0;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start; /* Align items to the top */
     height: 100vh;
     flex-direction: column; /* Center content vertically */
 }
 
-/* Header */
-header h1 {
-    margin-bottom: 10px;
-    font-size: 24px;
+/* Main container to hold elements side by side */
+.main-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; /* Space out the elements */
+    align-items: flex-start; /* Align items to the top */
+    width: 100%;
+    padding: 20px;
 }
 
-/* Buttons */
-button {
-    background: #a8d8ff;
-    color: #2a1d16;
-    border: none;
-    padding: 10px 15px;
-    margin: 10px 0;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: 0.3s;
-}
-
-button:hover {
-    background: #7ab8e6;
-}
-
-/* Input */
-input {
-    width: 80%;
+/* Sidebar (History) */
+.sidebar {
+    background: #2a1d16;
     padding: 10px;
-    border: 2px solid #a8d8ff;
     border-radius: 10px;
-    margin: 10px 0;
-    font-size: 16px;
-    text-align: center;
+    margin-top: 20px;
+    width: 30%; /* Adjust width for side-by-side layout */
+    max-width: 400px;
+    flex: 1; /* Ensure it grows with content */
 }
 
-/* Scanner */
+/* Chatbox Styling */
+.chatbox {
+    position: relative;
+    width: 30%; /* Adjust width for side-by-side layout */
+    height: 400px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease;
+    overflow: hidden;
+    flex: 1; /* Ensure it grows with content */
+}
+
+/* Scanner container */
 .scanner-container {
     margin: 15px 0;
     text-align: center;
+    width: 30%; /* Adjust width for side-by-side layout */
+    max-width: 300px;
+    flex: 1; /* Ensure it grows with content */
 }
 
-video {
+.video {
     width: 100%;
     max-width: 300px;
     border-radius: 10px;
@@ -68,107 +74,8 @@ video {
     color: #fff;
 }
 
-/* Sidebar (History) */
-.sidebar {
-    background: #2a1d16;
-    padding: 10px;
-    border-radius: 10px;
-    margin-top: 20px;
-    width: 80%;
-    max-width: 400px;
+/* Adjust layout for buttons, input, and other elements */
+button, input {
+    width: 100%; /* Make buttons and inputs stretch to the full width of their containers */
 }
 
-.sidebar ul {
-    list-style: none;
-    padding: 0;
-}
-
-.sidebar li {
-    background: #5c4033;
-    padding: 8px;
-    margin: 5px 0;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.sidebar li:hover {
-    background: #7a5646;
-}
-
-/* Accessibility Mode */
-.grayscale {
-    filter: grayscale(100%);
-    background-color: #222;
-    color: #ddd;
-}
-
-/* Chatbox Styling */
-#chatbox {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 300px;
-    height: 400px;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.3s ease;
-    overflow: hidden;
-}
-
-#chatbox.minimized {
-    transform: translateY(360px);
-}
-
-#chat-toggle {
-    background: #007bff;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-size: 14px;
-    width: 100%;
-    text-align: center;
-    border-radius: 10px 10px 0 0;
-    position: absolute;
-    bottom: 100%;
-    left: 0;
-}
-
-#chat-messages {
-    flex-grow: 1;
-    overflow-y: auto;
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
-}
-
-.message {
-    background: #f1f1f1;
-    padding: 5px 10px;
-    margin: 5px 0;
-    border-radius: 5px;
-}
-
-#message-input {
-    width: 75%;
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-#send-button {
-    width: 20%;
-    padding: 5px;
-    background: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-/* Chatbox Toggle Visibility */
-#chatbox.minimized #chat-toggle {
-    bottom: 0;
-}

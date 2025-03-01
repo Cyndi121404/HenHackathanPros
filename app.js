@@ -8,6 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const historyList = document.getElementById("history-list");
     const reminderButton = document.getElementById("set-reminder");
     const themeButton = document.getElementById("toggle-theme");
+    const chatbox = document.getElementById("chatbox");
+    const chatToggle = document.getElementById("chat-toggle");
 
     let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
 
@@ -25,6 +27,10 @@ document.addEventListener("DOMContentLoaded", () => {
         fetch(`https://api.fda.gov/drug/label.json?search=openfda.product_ndc:${query}+OR+openfda.brand_name:${query}`)
             .then(response => response.json())
             .then(data => {
+                if (!data.results || data.results.length === 0) {
+                    throw new Error("No results found");
+                }
+
                 let drug = data.results[0];
                 let name = drug.openfda.brand_name ? drug.openfda.brand_name[0] : "Unknown";
                 let facts = drug.indications_and_usage ? drug.indications_and_usage[0] : "No details found";
@@ -38,7 +44,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     updateHistory();
                 }
             })
-            .catch(() => {
+            .catch(error => {
+                console.error("Error fetching drug info:", error);
                 drugNameElem.textContent = "Not Found";
                 drugFactsElem.textContent = "No data available";
             });
@@ -93,4 +100,54 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     updateHistory();
+
+    // --- Chatbox Functionality ---
+    let chatMessages = document.getElementById("chat-messages");
+    let messageInput = document.getElementById("message-input");
+    let sendButton = document.getElementById("send-button");
+
+    if (!chatMessages || !messageInput || !sendButton) {
+        console.error("Chatbox elements not found. Make sure they are in the HTML.");
+        return;
+    }
+
+    function sendMessageToSmalltalk(message) {
+        fetch("http://localhost:8080", {
+            method: "POST",
+            body: message
+        }).then(() => fetchMessages());
+    }
+
+    function fetchMessages() {
+        fetch("http://localhost:8080")
+            .then(response => response.text())
+            .then(data => {
+                chatMessages.innerHTML = "";
+                let messages = data.split("\n");
+                messages.forEach(msg => {
+                    let messageDiv = document.createElement("div");
+                    messageDiv.textContent = msg;
+                    chatMessages.appendChild(messageDiv);
+                });
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            })
+            .catch(error => console.error("Error fetching messages:", error));
+    }
+
+    sendButton.addEventListener("click", function () {
+        let messageText = messageInput.value.trim();
+        if (messageText) {
+            sendMessageToSmalltalk(messageText);
+            messageInput.value = "";
+        }
+    });
+
+    setInterval(fetchMessages, 3000);
+
+    // --- Chatbox Minimize/Expand ---
+    chatToggle.addEventListener("click", () => {
+        chatbox.classList.toggle("minimized");
+    });
 });
+
+

@@ -1,149 +1,109 @@
-/* Global Styles */
+/* General Styling */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
+    background-color: #3b2a20;
+    color: #a8d8ff;
     margin: 0;
     padding: 0;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     height: 100vh;
-    background-color: #f4f4f4;
 }
 
-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-    border-radius: 12px;  /* Rounded buttons */
-}
-
-h1, h2, h3 {
-    color: #333;
-}
-
-input, textarea {
-    padding: 10px;
-    margin: 5px;
-    border-radius: 8px;  /* Rounded input fields */
-}
-
-/* Accessibility Version - Greyscale */
-body.high-contrast {
-    filter: grayscale(100%);
-    background-color: #f0f0f0;
-}
-
-body.high-contrast button,
-body.high-contrast input,
-body.high-contrast textarea {
-    filter: grayscale(100%);
-    background-color: #ccc;  /* Greyscale button background */
-    color: #333;
-}
-
-/* Main Version - Light Blue and Dark Brown */
-body {
-    background-color: #e6f7ff; /* Light blue */
-}
-
-header {
-    background-color: #3e2723;  /* Dark brown */
-    padding: 10px;
-    width: 100%;
-    color: white;
+.container {
     text-align: center;
+    width: 90%;
+    max-width: 500px;
+    background: #2a1d16;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
+/* Header */
+header h1 {
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+/* Buttons */
 button {
-    background-color: #81d4fa; /* Light blue button background */
-    color: #3e2723;  /* Dark brown text */
+    background: #a8d8ff;
+    color: #2a1d16;
+    border: none;
+    padding: 10px 15px;
+    margin: 10px 0;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
 }
 
 button:hover {
-    background-color: #4fc3f7; /* Darker blue for hover effect */
+    background: #7ab8e6;
 }
 
-button:active {
-    background-color: #29b6f6; /* Active button color */
+/* Input */
+input {
+    width: 80%;
+    padding: 10px;
+    border: 2px solid #a8d8ff;
+    border-radius: 10px;
+    margin: 10px 0;
+    font-size: 16px;
+    text-align: center;
 }
 
-input, textarea {
-    border: 1px solid #3e2723;  /* Dark brown border for inputs */
+/* Scanner */
+.scanner-container {
+    margin: 15px 0;
 }
 
-/* Scanner and Form Section Styling */
-#scanner, #manual-entry, #medicine-details {
-    margin: 20px;
-    padding: 20px;
-    border-radius: 12px;
-    background-color: white;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-#scanner {
-    background-color: #ffffff;
-}
-
-#manual-entry form input, #manual-entry form button {
+video {
     width: 100%;
-    max-width: 400px;
+    max-width: 300px;
+    border-radius: 10px;
+    display: none;
 }
 
-#medicine-details {
-    max-width: 600px;
-    padding: 20px;
-    border-radius: 12px;
-    background-color: white;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+/* Drug Info */
+.drug-info {
+    margin-top: 15px;
+    padding: 15px;
+    background: #3b2a20;
+    border-radius: 10px;
+    color: #fff;
 }
 
-#medicine-info {
+/* Sidebar (History) */
+.sidebar {
+    background: #2a1d16;
+    padding: 10px;
+    border-radius: 10px;
     margin-top: 20px;
 }
 
-#medicines ul {
-    list-style-type: none;
+.sidebar ul {
+    list-style: none;
     padding: 0;
 }
 
-#medicines ul li {
-    background-color: #ffffff;
-    margin: 10px 0;
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+.sidebar li {
+    background: #5c4033;
+    padding: 8px;
+    margin: 5px 0;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-#medicines ul li button {
-    background-color: #f44336; /* Red for delete button */
-    color: white;
-    margin-top: 10px;
-    width: 100%;
+.sidebar li:hover {
+    background: #7a5646;
 }
 
-#medicines ul li button:hover {
-    background-color: #e53935;  /* Darker red on hover */
-}
-
-/* Accessibility Mode Button Positioning */
-#toggle-accessibility {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    font-size: 16px;
-    background-color: #ffeb3b;  /* Yellow for visibility */
-    color: #3e2723;
-    padding: 15px 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-}
-
-#toggle-accessibility:hover {
-    background-color: #ffca28;
-}
-
-#toggle-accessibility:active {
-    background-color: #f57f17;
+/* Accessibility Mode */
+.grayscale {
+    filter: grayscale(100%);
+    background-color: #222;
+    color: #ddd;
 }

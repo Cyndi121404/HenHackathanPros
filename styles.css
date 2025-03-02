@@ -104,18 +104,39 @@ button {
     overflow: hidden;
 }
 
+/* Show the chatbox when it's active */
 .chatbox.visible {
     display: block;
 }
 
-/* Chat header */
+/* Chat header with X button on the left and title centered */
 .chat-header {
     background-color: #211C84;
     color: #B5A8D5;
     padding: 10px;
-    text-align: center;
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    align-items: center;
 }
 
+/* Close button on the left */
+.chat-header .close-btn {
+    justify-self: start;
+    background: none;
+    border: none;
+    color: #B5A8D5;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* Title centered */
+.chat-header .title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* Chat messages container */
 .chat-messages {
     padding: 10px;
     height: calc(100% - 80px); /* Adjust height to fit within the chatbox */
@@ -124,20 +145,26 @@ button {
     flex-direction: column;
 }
 
+/* Chat input container centered */
 .chat-input {
     display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 10px;
-    position: absolute;
-    bottom: 0;
     width: 100%;
     background-color: #211C84;
+    position: absolute;
+    bottom: 0;
 }
 
+/* Input field styling */
 .chat-input input {
     flex: 1;
     padding: 5px;
+    margin-right: 5px;
 }
 
+/* Button styling */
 .chat-input button {
     padding: 5px;
 }
@@ -145,12 +172,13 @@ button {
 /* Individual message styling */
 .message {
     background-color: #B5A8D5;
-    color:#211C84
+    color: #211C84;
     padding: 8px;
     margin-bottom: 5px;
     border-radius: 5px;
     max-width: 80%;
 }
+
 
 /* Hide chat provider button when chatbox is visible */
 .chat-provider.hidden {

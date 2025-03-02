@@ -85,3 +85,8 @@ button {
 #history-list li:hover {
     background: #e0631c;
 }
+/* Grayscale Mode */
+.grayscale {
+    filter: grayscale(100%);
+    transition: filter 0.3s ease-in-out;
+}

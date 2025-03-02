@@ -10,13 +10,26 @@ body {
     align-items: flex-start;
     height: 100vh;
     flex-direction: column;
+
+        overflow: hidden;
+
+    
 }
 
 /* Header */
 header {
     width: 100%;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+}
+#particles-js {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #4D55CC;
+    z-index: -1;
+    top: 0;
+    left: 0;
 }
 
 header h1 {
@@ -59,7 +72,7 @@ button {
     margin: 10px 0;
     border-radius: 75px;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 18px;
     transition: 0.3s;
 }
 
@@ -96,7 +109,7 @@ button {
 .chatbox {
     display: none;
     width: 100%;
-    height: 300px;
+    height: 200px;
     background-color: #211C84;
     border: 1px solid #211C84;
     position: relative;
@@ -105,14 +118,22 @@ button {
 
 /* Show the chatbox when it's active */
 .chatbox.visible {
-    display: block;
+    display: flex;
+}
+#drug-input {
+    width: 100%;
+    padding: 12px;
+    font-size: 20px;
+    border-radius: 75px;
+    border: none;
+    outline: none;
+    text-align: center;
 }
 
 /* Chat header with X button on the left and title centered */
 .chat-header {
     background-color: #211C84;
     color: #B5A8D5;
-    padding: 10px;
     display: grid;
     grid-template-columns: 1fr 3fr 1fr;
     align-items: center;
@@ -120,11 +141,11 @@ button {
 
 /* Close button on the left */
 .chat-header .close-btn {
-    justify-self: start;
     background: none;
     border: none;
     color: #B5A8D5;
     font-size: 18px;
+    display: flex;
     cursor: pointer;
 }
 
@@ -182,14 +203,13 @@ button {
 
 /* Styling for the barcode overlay */
 .barcode-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: center;
+    
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
     color: white;
-    font-size: 24px;
+    font-size: 18px;
     display: none; /* Hidden by default */
     justify-content: center;
     align-items: center;

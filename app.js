@@ -219,7 +219,71 @@ document.addEventListener("DOMContentLoaded", () => {
             });
     }
     
+    particlesJS("particles-js", {
+        particles: {
+            number: {
+                value: 1000,
+                density: {
+                    enable: true,
+                    value_area: 800
+                }
+            },
+            color: {
+                value: ["#B5A8D5", "#211C84", "#7A73D1"]
+            },
+            shape: {
+                type: "circle"
+            },
+            opacity: {
+                value: 0.7,
+                random: true
+            },
+            size: {
+                value: 5,
+                random: true
+            },
+            move: {
+                enable: true,
+                speed: 5,
+                direction: "none",
+                random: true,
+                straight: false,
+                out_mode: "out",
+                bounce: true
+            },
+            line_linked: {
+                enable: false
+            }
+        },
+        interactivity: {
+            detect_on: "canvas",
+            events: {
+                onhover: {
+                    enable: true,
+                    mode: "repulse"
+                },
+                onclick: {
+                    enable: true,
+                    mode: "push"
+                },
+                resize: true
+            }
+        },
+        retina_detect: true
+    });
+    
 
+    const clearHistoryButton = document.createElement("button");
+clearHistoryButton.id = "clear-history";
+clearHistoryButton.textContent = "Clear History";
+document.querySelector(".sidebar").appendChild(clearHistoryButton);
+
+clearHistoryButton.addEventListener("click", () => {
+    localStorage.removeItem("searchHistory");
+    searchHistory = [];
     updateHistory();
+});
+
+updateHistory();
     updateChatHistory();
 });

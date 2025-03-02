@@ -40,9 +40,9 @@ header h1 {
 /* Grid box styling */
 .grid-box {
     background: #211C84;
-    border-radius: 75px;
+    border-radius: 50px;
     padding: 20px;
-    height: 300px;
+    height: 250px;
     display: flex;
     flex-direction: column;
     justify-content: center;

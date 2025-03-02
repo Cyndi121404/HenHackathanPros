@@ -25,12 +25,13 @@ document.addEventListener("DOMContentLoaded", () => {
     chatMessages.style.overflowY = "auto";
     chatMessages.style.maxHeight = "300px";
 
-    // Function to randomize border styles
+    // Function to randomize border styles using the specified colors
+    const borderColors = ["#211C84", "#7A73D1", "#B5A8D5"];
     function randomizeBorder() {
         gridBoxes.forEach(box => {
             const randomWidth = Math.floor(Math.random() * 5) + 1; // Border width between 1px and 5px
             const randomStyle = ["solid", "dotted", "dashed"][Math.floor(Math.random() * 3)];
-            const randomColor = "#" + Math.floor(Math.random()*16777215).toString(16); // Random hex color
+            const randomColor = borderColors[Math.floor(Math.random() * borderColors.length)]; // Pick one of the specified colors
             box.style.border = `${randomWidth}px ${randomStyle} ${randomColor}`;
         });
     }
@@ -61,20 +62,16 @@ document.addEventListener("DOMContentLoaded", () => {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
+    // Toggle between showing the chat button and chatbox
     chatProviderButton.addEventListener("click", () => {
-        chatContainer.innerHTML = "";
-        chatbox.classList.remove("hidden");
-        chatContainer.appendChild(chatbox);
+        chatbox.classList.remove("hidden"); // Show the chatbox
+        chatProviderButton.classList.add("hidden"); // Hide the "Chat with Provider" button
     });
 
+    // Minimize the chatbox
     chatMinimizeButton.addEventListener("click", () => {
-        chatbox.classList.add("hidden");
-        chatContainer.innerHTML = '<button id="chat-provider-button">💬 Chat with Provider</button>';
-        document.getElementById("chat-provider-button").addEventListener("click", () => {
-            chatContainer.innerHTML = "";
-            chatbox.classList.remove("hidden");
-            chatContainer.appendChild(chatbox);
-        });
+        chatbox.classList.add("hidden"); // Hide the chatbox
+        chatProviderButton.classList.remove("hidden"); // Show the "Chat with Provider" button
     });
 
     function sendMessage() {

@@ -14,44 +14,50 @@
     </header>
 
     <div class="main-container">
+        <!-- Manual search box -->
         <div class="grid-box manual-search">
             <input type="text" id="drug-input" placeholder="Enter Drug Name or NDC">
             <button id="search-drug">Search</button>
         </div>
 
+        <!-- Scanner container -->
         <div class="grid-box scanner-container">
             <button id="start-scan">Scan Barcode</button>
             <video id="camera-preview"></video>
         </div>
+
+        <!-- Sidebar for search history -->
         <div class="grid-box sidebar">
             <h2>Search History</h2>
             <ul id="history-list"></ul>
         </div>
-       
 
+        <!-- Drug information display -->
         <div class="grid-box drug-info">
             <h2>Drug Information</h2>
             <p id="drug-name">Name: <span>-</span></p>
             <p id="drug-facts">Facts: <span>-</span></p>
-            
-        </div> 
-        
-
-        <!-- Chatbox should start as hidden by default -->
-<div class="grid-box chatbox hidden" id="chatbox">
-    <div class="chat-header">
-        <h2>Chat with Provider</h2>
-        <button id="chat-minimize-button">➖</button>
-    </div>
-    <div id="chat-messages" class="chat-messages"></div>
-    <div class="chat-input">
-        <input type="text" id="message-input" placeholder="Type a message...">
-        <button id="send-button">Send</button>
-    </div>
-</div>
-
-            
         </div>
+
+        <!-- Chat with provider button -->
+        <div class="grid-box chat-provider">
+            <button id="chat-provider-button">Chat with Provider</button>
+        </div>
+
+        <!-- Chatbox for conversation -->
+        <div class="grid-box chatbox hidden" id="chatbox">
+            <div class="chat-header">
+                <h2>Chat with Provider</h2>
+                <button id="chat-minimize-button">➖</button>
+            </div>
+            <div id="chat-messages" class="chat-messages"></div>
+            <div class="chat-input">
+                <input type="text" id="message-input" placeholder="Type a message...">
+                <button id="send-button">Send</button>
+            </div>
+        </div>
+
+        <!-- Reminder and accessibility theme toggle -->
         <div class="grid-box reminder">
             <button id="set-reminder">Set Reminder</button>
             <button id="toggle-theme">Toggle Accesability Theme</button>

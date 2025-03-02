@@ -27,19 +27,17 @@ document.addEventListener("DOMContentLoaded", () => {
     chatMessages.style.overflowY = "auto";
     chatMessages.style.maxHeight = "300px";
 
-    // Function to randomize border styles using the specified colors
-    const borderColors = ["#211C84", "#7A73D1", "#B5A8D5"];
-    function randomizeBorder() {
-        gridBoxes.forEach(box => {
-            const randomWidth = Math.floor(Math.random() * 5) + 1; // Border width between 1px and 5px
-            const randomStyle = ["solid", "dotted", "dashed"][Math.floor(Math.random() * 3)];
-            const randomColor = borderColors[Math.floor(Math.random() * borderColors.length)]; // Pick one of the specified colors
-            box.style.border = `${randomWidth}px ${randomStyle} ${randomColor}`;
+    // Apply hover effect for shadow
+    const lightBlueColor = "#7A73D1"; // Light blue shade for the shadow
+    gridBoxes.forEach(box => {
+        box.addEventListener("mouseover", () => {
+            box.style.boxShadow = `0 0 15px ${lightBlueColor}`; // Apply shadow on hover
         });
-    }
 
-    // Randomize borders when the page loads
-    randomizeBorder();
+        box.addEventListener("mouseout", () => {
+            box.style.boxShadow = "none"; // Remove shadow when not hovering
+        });
+    });
 
     // Update the history list
     function updateHistory() {

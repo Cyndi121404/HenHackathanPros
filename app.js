@@ -8,18 +8,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const historyList = document.getElementById("history-list");
     const reminderButton = document.getElementById("set-reminder");
     const themeButton = document.getElementById("toggle-theme");
-    const chatContainer = document.querySelector(".chat-provider");
-    const chatProviderButton = document.getElementById("chat-provider-button");
     const chatbox = document.getElementById("chatbox");
-    const chatMinimizeButton = document.getElementById("chat-minimize-button");
     const chatMessages = document.getElementById("chat-messages");
     const messageInput = document.getElementById("message-input");
     const sendButton = document.getElementById("send-button");
-    
+    const chatToggleButton = document.getElementById("chat-toggle");
+    const chatProviderButton = document.getElementById("chat-provider-button");
+
     let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
     let chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || [];
 
-    chatbox.classList.add("hidden");
+    chatbox.style.display = "none";
 
     function updateHistory() {
         historyList.innerHTML = "";
@@ -41,78 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
-
-    chatProviderButton.addEventListener("click", () => {
-        chatContainer.innerHTML = "";
-        chatbox.classList.remove("hidden");
-        chatContainer.appendChild(chatbox);
-    });
-
-    chatMinimizeButton.addEventListener("click", () => {
-        chatbox.classList.add("hidden");
-        chatContainer.innerHTML = '<button id="chat-provider-button">💬 Chat with Provider</button>';
-        document.getElementById("chat-provider-button").addEventListener("click", () => {
-            chatContainer.innerHTML = "";
-            chatbox.classList.remove("hidden");
-            chatContainer.appendChild(chatbox);
-        });
-    });
-
-    function sendMessage() {
-        let messageText = messageInput.value.trim();
-        if (messageText === "") return;
-
-        chatHistory.push(messageText);
-        localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
-        updateChatHistory();
-        messageInput.value = "";
-    }
-
-    sendButton.addEventListener("click", sendMessage);
-    messageInput.addEventListener("keypress", event => {
-        if (event.key === "Enter") sendMessage();
-    });
-
-    scanButton.addEventListener("click", async () => {
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-            video.srcObject = stream;
-            video.play();
-        } catch (error) {
-            console.error("Error accessing the camera:", error);
-        }
-    });
-
-    searchButton.addEventListener("click", () => {
-        let query = drugInput.value.trim();
-        if (query) fetchDrugInfo(query);
-    });
-
-    reminderButton.addEventListener("click", () => {
-        let time = prompt("Enter reminder time (HH:MM 24h format):");
-        if (time) {
-            Notification.requestPermission().then(permission => {
-                if (permission === "granted") {
-                    let now = new Date();
-                    let [hour, minute] = time.split(":").map(Number);
-                    let reminderTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, minute);
-
-                    let delay = reminderTime - now;
-                    if (delay > 0) {
-                        setTimeout(() => {
-                            new Notification("Medication Reminder", {
-                                body: `Time to take ${drugNameElem.textContent}`
-                            });
-                        }, delay);
-                    }
-                }
-            });
-        }
-    });
-
-    themeButton.addEventListener("click", () => {
-        document.body.classList.toggle("grayscale");
-    });
 
     function fetchDrugInfo(query) {
         fetch(`https://api.fda.gov/drug/label.json?search=openfda.product_ndc:${query}+OR+openfda.brand_name:${query}`)
@@ -142,6 +69,138 @@ document.addEventListener("DOMContentLoaded", () => {
             });
     }
 
+    searchButton.addEventListener("click", () => {
+        let query = drugInput.value.trim();
+        if (query) fetchDrugInfo(query);
+    });
+
+    async function activateCamera() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            video.srcObject = stream;
+            video.play();
+        } catch (error) {
+            console.error("Error accessing the camera:", error);
+        }
+    }
+
+    scanButton.addEventListener("click", async () => {
+        await activateCamera();
+        video.style.display = "block";
+        Quagga.init({
+            inputStream: { name: "Live", type: "LiveStream", target: video },
+            decoder: { readers: ["ean_reader"] }
+        }, err => {
+            if (!err) Quagga.start();
+        });
+
+        Quagga.onDetected(data => {
+            Quagga.stop();
+            video.style.display = "none";
+            
+            let tracks = video.srcObject.getTracks();
+            tracks.forEach(track => track.stop());
+
+            let barcode = data.codeResult.code;
+            fetchDrugInfo(barcode);
+        });
+    });
+    document.addEventListener("DOMContentLoaded", () => {
+        const scanButton = document.getElementById("start-scan");
+        const videoWrapper = document.getElementById("video-wrapper");
+        const video = document.getElementById("camera-preview");
+        const closeVideoButton = document.getElementById("close-video");
+    
+        async function activateCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+                video.play();
+                videoWrapper.style.display = "block";
+            } catch (error) {
+                console.error("Error accessing the camera:", error);
+            }
+        }
+    
+        scanButton.addEventListener("click", activateCamera);
+    
+        closeVideoButton.addEventListener("click", () => {
+            videoWrapper.style.display = "none";
+            let tracks = video.srcObject?.getTracks();
+            tracks?.forEach(track => track.stop());
+        });
+    });
+
+    reminderButton.addEventListener("click", () => {
+        let time = prompt("Enter reminder time (HH:MM 24h format):");
+        if (time) {
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    let now = new Date();
+                    let [hour, minute] = time.split(":").map(Number);
+                    let reminderTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, minute);
+
+                    let delay = reminderTime - now;
+                    if (delay > 0) {
+                        setTimeout(() => {
+                            new Notification("Medication Reminder", {
+                                body: `Time to take ${drugNameElem.textContent}`
+                            });
+                        }, delay);
+                    }
+                }
+            });
+        }
+    });
+
+    themeButton.addEventListener("click", () => {
+        document.body.classList.toggle("grayscale");
+    });
+
+    function sendMessage() {
+        let messageText = messageInput.value.trim();
+        if (messageText === "") return;
+
+        chatHistory.push(messageText);
+        localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
+        updateChatHistory();
+        messageInput.value = "";
+    }
+
+    sendButton.addEventListener("click", sendMessage);
+    messageInput.addEventListener("keypress", event => {
+        if (event.key === "Enter") sendMessage();
+    });
+
+    chatProviderButton.addEventListener("click", () => {
+        chatbox.style.display = "block";
+    });
+
+    chatToggleButton.addEventListener("click", () => {
+        chatbox.classList.toggle("minimized");
+    });
+
     updateHistory();
     updateChatHistory();
+    document.addEventListener("DOMContentLoaded", () => {
+        const themeButton = document.getElementById("toggle-theme");
+    
+        // Check for saved theme preference
+        if (localStorage.getItem("theme") === "grayscale") {
+            document.body.classList.add("grayscale");
+        }
+    
+        // Toggle grayscale mode on button click
+        themeButton.addEventListener("click", () => {
+            document.body.classList.toggle("grayscale");
+    
+            // Save the user's preference in localStorage
+            if (document.body.classList.contains("grayscale")) {
+                localStorage.setItem("theme", "grayscale");
+            } else {
+                localStorage.removeItem("theme");
+            }
+        });
+    });
+    
 });

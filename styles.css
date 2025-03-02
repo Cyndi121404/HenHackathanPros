@@ -1,7 +1,8 @@
 /* General Styling */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #B1B695;
+    background-color: #2B303A;
+    
     color: #F4772A;
     margin: 0;
     padding: 0;
@@ -84,4 +85,9 @@ button {
 /* Change background color when hovered */
 #history-list li:hover {
     background: #e0631c;
+}
+/* Grayscale Mode */
+.grayscale {
+    filter: grayscale(100%);
+    transition: filter 0.3s ease-in-out;
 }

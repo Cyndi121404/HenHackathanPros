@@ -93,10 +93,10 @@ button {
 }
 /* Initially hide the chatbox */
 .chatbox {
-    display: none;  /* Hidden by default */
+    display: none; /* Hidden by default */
 }
 
-/* Optionally, you can add a class for when chatbox is visible */
+/* Optionally, you can add a class for when the chatbox is visible */
 .chatbox.visible {
     display: block; /* Visible when toggled */
 }

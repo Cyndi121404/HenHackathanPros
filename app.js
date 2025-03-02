@@ -61,20 +61,19 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
-
-    // Toggle between showing the chat button and chatbox
     chatProviderButton.addEventListener("click", () => {
-        // Hide the button and show the chatbox
-        chatProviderButton.classList.add("hidden");
-        chatbox.classList.remove("hidden");
+        // Hide the chat provider button and show the chatbox
+        chatProviderButton.classList.add("hidden"); // Hide the button
+        chatbox.classList.remove("hidden"); // Show the chatbox
+        chatbox.classList.add("visible"); // Optionally, if you want to use an additional class for visibility
     });
-
-    // Minimize the chatbox
+    
     chatMinimizeButton.addEventListener("click", () => {
-        // Hide the chatbox and show the button
-        chatbox.classList.add("hidden");
-        chatProviderButton.classList.remove("hidden");
+        // Hide the chatbox and show the button again
+        chatbox.classList.add("hidden"); // Hide the chatbox
+        chatProviderButton.classList.remove("hidden"); // Show the chat provider button
     });
+    
 
     function sendMessage() {
         let messageText = messageInput.value.trim();

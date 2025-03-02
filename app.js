@@ -62,16 +62,17 @@ document.addEventListener("DOMContentLoaded", () => {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
     chatProviderButton.addEventListener("click", () => {
-        // Hide the chat provider button and show the chatbox
-        chatProviderButton.style.display = "none"; // Hide the chat button
-        chatbox.style.display = "block"; // Show the chatbox
+        // Hide the entire grid box containing the chat provider button and show the chatbox
+        chatContainer.style.display = "none";  // Hides the entire grid-box with the button
+        chatbox.style.display = "block"; // Shows the chatbox
     });
     
     chatMinimizeButton.addEventListener("click", () => {
-        // Hide the chatbox and show the button again
+        // Hide the chatbox and show the grid-box with the chat provider button again
         chatbox.style.display = "none"; // Hide the chatbox
-        chatProviderButton.style.display = "block"; // Show the chat provider button
+        chatContainer.style.display = "block"; // Show the grid-box with the chat button
     });
+    
     
     
 

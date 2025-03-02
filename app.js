@@ -65,13 +65,26 @@ document.addEventListener("DOMContentLoaded", () => {
         // Hide the entire grid box containing the chat provider button and show the chatbox
         chatContainer.style.display = "none";  // Hides the entire grid-box with the button
         chatbox.style.display = "block"; // Shows the chatbox
+    
+        // Recalculate the grid layout after the toggle
+        setTimeout(() => {
+            // Force the grid container to refresh its layout after the toggle
+            document.querySelector(".main-container").style.display = "grid";
+        }, 0);
     });
     
     chatMinimizeButton.addEventListener("click", () => {
         // Hide the chatbox and show the grid-box with the chat provider button again
         chatbox.style.display = "none"; // Hide the chatbox
         chatContainer.style.display = "block"; // Show the grid-box with the chat button
+    
+        // Recalculate the grid layout after the toggle
+        setTimeout(() => {
+            // Force the grid container to refresh its layout after the toggle
+            document.querySelector(".main-container").style.display = "grid";
+        }, 0);
     });
+    
     
     
     

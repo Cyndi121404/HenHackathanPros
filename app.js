@@ -1,12 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
     const scanButton = document.getElementById("start-scan");
     const video = document.getElementById("camera-preview");
+    const videoMinimizeButton = document.getElementById("video-minimize-button");
     const drugInput = document.getElementById("drug-input");
     const searchButton = document.getElementById("search-drug");
     const drugNameElem = document.querySelector("#drug-name span");
     const drugFactsElem = document.querySelector("#drug-facts span");
     const historyList = document.getElementById("history-list");
     const reminderButton = document.getElementById("set-reminder");
+    const reminderList = document.getElementById("reminder-list");
     const themeButton = document.getElementById("toggle-theme");
     const chatContainer = document.querySelector(".chat-provider");
     const chatProviderButton = document.getElementById("chat-provider-button");
@@ -15,96 +17,35 @@ document.addEventListener("DOMContentLoaded", () => {
     const chatMessages = document.getElementById("chat-messages");
     const messageInput = document.getElementById("message-input");
     const sendButton = document.getElementById("send-button");
-    const gridBoxes = document.querySelectorAll('.grid-box'); // Select all grid boxes
-
-    const reminderList = document.getElementById("reminder-list"); // List to display reminders
 
     let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
     let chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || [];
 
-    // Initially, hide the chatbox and show the chat button
     chatbox.classList.add("hidden");
     chatMessages.style.overflowY = "auto";
     chatMessages.style.maxHeight = "300px";
 
-    // Apply hover effect for shadow
-    const lightBlueColor = "#7A73D1"; // Light blue shade for the shadow
-    gridBoxes.forEach(box => {
-        box.addEventListener("mouseover", () => {
-            box.style.boxShadow = `0 0 15px ${lightBlueColor}`; // Apply shadow on hover
-        });
+    // Hide the video preview initially
+    video.style.display = "none";
 
-        box.addEventListener("mouseout", () => {
-            box.style.boxShadow = "none"; // Remove shadow when not hovering
-        });
-    });
-
-    // Update the history list
-    function updateHistory() {
-        historyList.innerHTML = "";
-        searchHistory.forEach(drug => {
-            let li = document.createElement("li");
-            li.textContent = drug;
-            li.addEventListener("click", () => fetchDrugInfo(drug));
-            historyList.appendChild(li);
-        });
-    }
-
-    // Update the chat history display
-    function updateChatHistory() {
-        chatMessages.innerHTML = "";
-        chatHistory.forEach(msg => {
-            const messageDiv = document.createElement("div");
-            messageDiv.classList.add("message");
-            messageDiv.textContent = msg;
-            chatMessages.appendChild(messageDiv);
-        });
-        // Scroll to the bottom of the entire chat container (including the input)
-        chatbox.scrollTop = chatbox.scrollHeight;
-    }
-
-    chatProviderButton.addEventListener("click", () => {
-        // Hide the entire grid box containing the chat provider button and show the chatbox
-        chatContainer.style.display = "none";  // Hides the entire grid-box with the button
-        chatbox.style.display = "block"; // Shows the chatbox
-    });
-
-    chatMinimizeButton.addEventListener("click", () => {
-        // Hide the chatbox and show the grid-box with the chat provider button again
-        chatbox.style.display = "none"; // Hide the chatbox
-        chatContainer.style.display = "block"; // Show the grid-box with the chat button
-    });
-
-    function sendMessage() {
-        let messageText = messageInput.value.trim();
-        if (messageText === "") return;
-
-        chatHistory.push(messageText);
-        localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
-        updateChatHistory();
-        messageInput.value = "";
-    }
-
-    sendButton.addEventListener("click", sendMessage);
-    messageInput.addEventListener("keypress", event => {
-        if (event.key === "Enter") sendMessage();
-    });
-
+    // Start scan to access the camera
     scanButton.addEventListener("click", async () => {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ video: true });
             video.srcObject = stream;
             video.play();
+            video.style.display = "block"; // Show video preview
         } catch (error) {
             console.error("Error accessing the camera:", error);
         }
     });
 
-    searchButton.addEventListener("click", () => {
-        let query = drugInput.value.trim();
-        if (query) fetchDrugInfo(query);
+    // Minimize video preview when 'X' button is clicked
+    videoMinimizeButton.addEventListener("click", () => {
+        video.style.display = "none"; // Hide video preview
     });
 
+    // Set reminder functionality
     reminderButton.addEventListener("click", () => {
         let time = prompt("Enter reminder time (HH:MM 24h format):");
         if (time) {
@@ -136,6 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    // Toggle theme functionality
     themeButton.addEventListener("click", () => {
         document.body.classList.toggle("grayscale");
         if (document.body.classList.contains("grayscale")) {
@@ -145,6 +87,35 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    // Chat provider button functionality
+    chatProviderButton.addEventListener("click", () => {
+        chatContainer.style.display = "none";  // Hide chat button container
+        chatbox.style.display = "block"; // Show chatbox
+    });
+
+    // Minimize chatbox when 'X' button is clicked
+    chatMinimizeButton.addEventListener("click", () => {
+        chatbox.style.display = "none"; // Hide chatbox
+        chatContainer.style.display = "block"; // Show chat button container
+    });
+
+    // Send chat message functionality
+    function sendMessage() {
+        let messageText = messageInput.value.trim();
+        if (messageText === "") return;
+
+        chatHistory.push(messageText);
+        localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
+        updateChatHistory();
+        messageInput.value = "";
+    }
+
+    sendButton.addEventListener("click", sendMessage);
+    messageInput.addEventListener("keypress", event => {
+        if (event.key === "Enter") sendMessage();
+    });
+
+    // Fetch drug information from API
     function fetchDrugInfo(query) {
         fetch(`https://api.fda.gov/drug/label.json?search=openfda.product_ndc:${query}+OR+openfda.brand_name:${query}`)
             .then(response => response.json())
@@ -171,6 +142,30 @@ document.addEventListener("DOMContentLoaded", () => {
                 drugNameElem.textContent = "Not Found";
                 drugFactsElem.textContent = "No data available";
             });
+    }
+
+    // Update history list
+    function updateHistory() {
+        historyList.innerHTML = "";
+        searchHistory.forEach(drug => {
+            let li = document.createElement("li");
+            li.textContent = drug;
+            li.addEventListener("click", () => fetchDrugInfo(drug));
+            historyList.appendChild(li);
+        });
+    }
+
+    // Update chat history display
+    function updateChatHistory() {
+        chatMessages.innerHTML = "";
+        chatHistory.forEach(msg => {
+            const messageDiv = document.createElement("div");
+            messageDiv.classList.add("message");
+            messageDiv.textContent = msg;
+            chatMessages.appendChild(messageDiv);
+        });
+        // Scroll to the bottom of the entire chat container (including the input)
+        chatbox.scrollTop = chatbox.scrollHeight;
     }
 
     updateHistory();

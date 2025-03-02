@@ -12,6 +12,53 @@ body {
     flex-direction: column;
 }
 
+/* Set all text to 16px */
+body, button, input, span, li, div {
+    font-size: 16px;
+}
+
+/* Make the input box bigger with rounded corners */
+#drug-input {
+    width: 300px;
+    height: 40px;
+    border-radius: 10px;
+    padding: 10px;
+    border: 2px solid #ccc;
+    font-size: 16px;
+}
+
+/* Make the buttons have the same rounded corners */
+button {
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+/* Style for the video container */
+#video-container {
+    position: relative;
+}
+
+/* Minimize button for the video preview */
+.minimize-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+}
+
+/* Ensure the reminder text is displayed correctly under the button */
+#reminder-list li {
+    font-size: 16px;
+    margin-top: 5px;
+}
+
 /* Header */
 header {
     width: 100%;

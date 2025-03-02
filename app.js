@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
     chatMinimizeButton.addEventListener("click", () => {
         // Hide the chatbox and show the grid-box with the chat provider button again
         chatbox.style.display = "none"; // Hide the chatbox
-        chatContainer.style.display = "flex"; // Show the grid-box with the chat button
+        chatContainer.style.display = ""; // Show the grid-box with the chat button
     });
 
     function sendMessage() {
@@ -142,22 +142,24 @@ document.addEventListener("DOMContentLoaded", () => {
             video.srcObject = stream;
             video.play();
     
-            // Start Quagga (barcode scanning) when the camera is active
-            Quagga.init({
-                inputStream: {
-                    name: "Live",
-                    type: "LiveStream",
-                    target: video, // The video element where the scan is happening
-                },
-                decoder: {
-                    readers: ["ean_reader", "upc_reader", "code_128_reader"], // Add other readers as needed
-                },
-            }, function(err) {
-                if (err) {
-                    console.error(err);
-                    return;
-                }
-                Quagga.start();
+            // Start Quagga only when video is ready
+            video.addEventListener("canplay", () => {
+                Quagga.init({
+                    inputStream: {
+                        name: "Live",
+                        type: "LiveStream",
+                        target: video, // The video element where the scan is happening
+                    },
+                    decoder: {
+                        readers: ["ean_reader", "upc_reader", "code_128_reader"], // Add other readers as needed
+                    },
+                }, function(err) {
+                    if (err) {
+                        console.error(err);
+                        return;
+                    }
+                    Quagga.start();
+                });
             });
     
             // Handle scanned barcode
@@ -174,7 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("Error accessing the camera:", error);
         }
     });
-    
+   
 
     themeButton.addEventListener("click", () => {
         document.body.classList.toggle("grayscale");
@@ -195,15 +197,17 @@ document.addEventListener("DOMContentLoaded", () => {
     
                 let drug = data.results[0];
                 let name = drug.openfda.brand_name ? drug.openfda.brand_name[0] : "Unknown";
-                let facts = drug.indications_and_usage ? drug.indications_and_usage[0] : "No details found";
                 let dosing = drug.dosage_and_administration ? drug.dosage_and_administration[0] : "No dosing recommendations found";
-                let sideEffects = drug.warnings_and_precautions ? drug.warnings_and_precautions[0] : "No side effects listed";
     
-                drugNameElem.textContent = name;
-                drugFactsElem.textContent = facts;
-                document.getElementById("drug-dosing").textContent = `Dosing Recommendation: ${dosing}`;
-                document.getElementById("drug-side-effects").textContent = `Side Effects: ${sideEffects}`;
+                // Update the name and dosing information only
+                if (drugNameElem) {
+                    drugNameElem.textContent = name;
+                }
+                if (document.getElementById("drug-dosing")) {
+                    document.getElementById("drug-dosing").textContent = `Dosing Recommendation: ${dosing}`;
+                }
     
+                // Save the search history if it's not already added
                 if (!searchHistory.includes(query)) {
                     searchHistory.push(query);
                     localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
@@ -212,12 +216,40 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             .catch(error => {
                 console.error("Error fetching drug info:", error);
-                drugNameElem.textContent = "Not Found";
-                drugFactsElem.textContent = "No data available";
-                document.getElementById("drug-dosing").textContent = "No data available";
-                document.getElementById("drug-side-effects").textContent = "No data available";
+                if (drugNameElem) drugNameElem.textContent = "Not Found";
+                if (document.getElementById("drug-dosing")) {
+                    document.getElementById("drug-dosing").textContent = "No data available";
+                }
             });
     }
+    
+    document.addEventListener("DOMContentLoaded", () => {
+        // Create a container for the background icons
+        const backgroundContainer = document.createElement("div");
+        backgroundContainer.id = "background-icons";
+        backgroundContainer.style.position = "fixed";
+        backgroundContainer.style.top = "0";
+        backgroundContainer.style.left = "0";
+        backgroundContainer.style.width = "100%";
+        backgroundContainer.style.height = "100%";
+        backgroundContainer.style.zIndex = "-1"; // Ensure it stays in the background
+        backgroundContainer.style.pointerEvents = "none"; // Allow clicks to pass through
+        document.body.appendChild(backgroundContainer);
+    
+        // Create and position 50 icons randomly
+        for (let i = 0; i < 50; i++) {
+            let icon = document.createElement("img");
+            icon.src = "DoseDoodleLogo.png";
+            icon.style.position = "absolute";
+            icon.style.width = "50px";  // Adjust icon size as needed
+            icon.style.height = "50px";
+            // Set random positions within the viewport
+            icon.style.left = Math.random() * 100 + "%";
+            icon.style.top = Math.random() * 100 + "%";
+            backgroundContainer.appendChild(icon);
+        }
+    });
+    
     
     particlesJS("particles-js", {
         particles: {

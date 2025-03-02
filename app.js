@@ -136,24 +136,45 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
     });
-    document.addEventListener("DOMContentLoaded", () => {
-        // Existing elements
-        const scanButton = document.getElementById("start-scan");
-        const video = document.getElementById("camera-preview");
-        const minimizeVideoButton = document.getElementById("minimize-video"); // New minimize video button
+    scanButton.addEventListener("click", async () => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            video.srcObject = stream;
+            video.play();
     
-        // Initially, set the video preview to be visible
-        let videoVisible = true;
+            // Start Quagga (barcode scanning) when the camera is active
+            Quagga.init({
+                inputStream: {
+                    name: "Live",
+                    type: "LiveStream",
+                    target: video, // The video element where the scan is happening
+                },
+                decoder: {
+                    readers: ["ean_reader", "upc_reader", "code_128_reader"], // Add other readers as needed
+                },
+            }, function(err) {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                Quagga.start();
+            });
     
-        // Toggle visibility of the video preview
-        minimizeVideoButton.addEventListener("click", () => {
-            if (videoVisible) {
-                video.style.display = "none"; // Hide the video preview
-            } else {
-                video.style.display = "block"; // Show the video preview
-            }
-            videoVisible = !videoVisible; // Toggle the visibility state
-        });
+            // Handle scanned barcode
+            Quagga.onDetected(function(result) {
+                const barcode = result.codeResult.code; // Get the scanned barcode
+                const barcodeOverlay = document.getElementById("barcode-overlay");
+                
+                // Update the overlay text and show it
+                barcodeOverlay.textContent = `Scanned: ${barcode}`;
+                barcodeOverlay.style.display = "flex"; // Show the overlay
+            });
+    
+        } catch (error) {
+            console.error("Error accessing the camera:", error);
+        }
+    });
+    
 
     themeButton.addEventListener("click", () => {
         document.body.classList.toggle("grayscale");

@@ -2,7 +2,7 @@
 body {
     font-family: 'Arial', sans-serif;
     background-color: #eeacfc;
-    color: #a8d8ff;
+    color: #ffffff;
     margin: 0;
     padding: 0;
     display: flex;
@@ -37,7 +37,7 @@ header h1 {
 
 /* Sidebar (History) */
 .sidebar {
-    background: #2a1d16;
+    background: #0e0b0f;
     padding: 10px;
     border-radius: 10px;
     height: 400px; /* Set height for sidebar */
@@ -73,7 +73,7 @@ header h1 {
 
 /* Drug Info (Make it bigger) */
 .drug-info {
-    background: #3b2a20;
+    background: #0e0b0f;
     color: #fff;
     border-radius: 10px;
     padding: 30px; /* Increased padding for larger space */
@@ -87,7 +87,7 @@ header h1 {
 /* Chatbox Section (Make chat button smaller) */
 #chatbox {
     grid-column: span 3; /* Make chatbox take up full width */
-    background: white;
+    background: #0e0b0f;
     border-radius: 10px;
     padding: 20px;
     height: 400px;
@@ -100,7 +100,7 @@ header h1 {
 /* Chat button (Smaller size) */
 button {
     background: #a8d8ff;
-    color: #2a1d16;
+    color: #0e0b0f;
     border: none;
     padding: 8px 12px; /* Smaller padding for smaller button */
     margin: 10px 0;

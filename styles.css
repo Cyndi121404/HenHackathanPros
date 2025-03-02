@@ -11,22 +11,6 @@ body {
     height: 100vh;
     flex-direction: column;
 }
-/* Ensures elements are visible */
-video {
-    display: none;
-    width: 100%;
-    max-width: 400px;
-    border-radius: 100px;
-}
-
-.chatbox {
-    display: none; /* Initially hidden */
-}
-
-.minimized {
-    height: 40px;
-    overflow: hidden;
-}
 
 /* Header */
 header {

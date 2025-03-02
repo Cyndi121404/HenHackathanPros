@@ -20,6 +20,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || [];
 
     chatbox.classList.add("hidden");
+    chatMessages.style.overflowY = "auto";
+    chatMessages.style.maxHeight = "300px";
 
     function updateHistory() {
         historyList.innerHTML = "";
@@ -110,14 +112,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Theme button functionality (Fixed version)
-    if (localStorage.getItem("theme") === "grayscale") {
-        document.body.classList.add("grayscale");
-    }
-
     themeButton.addEventListener("click", () => {
         document.body.classList.toggle("grayscale");
-        
         if (document.body.classList.contains("grayscale")) {
             localStorage.setItem("theme", "grayscale");
         } else {

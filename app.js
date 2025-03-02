@@ -105,6 +105,31 @@ document.addEventListener("DOMContentLoaded", () => {
             fetchDrugInfo(barcode);
         });
     });
+    document.addEventListener("DOMContentLoaded", () => {
+        const scanButton = document.getElementById("start-scan");
+        const videoWrapper = document.getElementById("video-wrapper");
+        const video = document.getElementById("camera-preview");
+        const closeVideoButton = document.getElementById("close-video");
+    
+        async function activateCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+                video.play();
+                videoWrapper.style.display = "block";
+            } catch (error) {
+                console.error("Error accessing the camera:", error);
+            }
+        }
+    
+        scanButton.addEventListener("click", activateCamera);
+    
+        closeVideoButton.addEventListener("click", () => {
+            videoWrapper.style.display = "none";
+            let tracks = video.srcObject?.getTracks();
+            tracks?.forEach(track => track.stop());
+        });
+    });
 
     reminderButton.addEventListener("click", () => {
         let time = prompt("Enter reminder time (HH:MM 24h format):");

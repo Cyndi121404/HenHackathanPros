@@ -103,6 +103,7 @@ button {
     transition: filter 0.3s ease-in-out;
 }
 
+/* Chatbox Styling */
 .chatbox {
     display: none;
     width: 100%;
@@ -117,6 +118,7 @@ button {
 .chatbox.visible {
     display: flex;
 }
+
 #drug-input {
     width: 100%;
     padding: 12px;
@@ -171,7 +173,6 @@ button {
     padding: 10px;
     width: 100%;
     background-color: #211C84;
-
 }
 
 /* Input field styling */
@@ -204,7 +205,6 @@ button {
 /* Styling for the barcode overlay */
 .barcode-overlay {
     position: center;
-    
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
@@ -231,4 +231,11 @@ button {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+/* Add scroll to the drug info box */
+#drug-info-box {
+    overflow-y: auto;
+    max-height: 300px; /* Set max height for scroll */
+    padding-right: 15px; /* For scrollbar spacing */
 }

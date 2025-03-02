@@ -12,8 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const chatMessages = document.getElementById("chat-messages");
     const messageInput = document.getElementById("message-input");
     const sendButton = document.getElementById("send-button");
-    const chatToggleButton = document.getElementById("chat-toggle");
     const chatProviderButton = document.getElementById("chat-provider-button");
+    const chatMinimizeButton = document.getElementById("chat-minimize-button");
 
     let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
     let chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || [];
@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function fetchDrugInfo(query) {
+        console.log("Fetching drug info for:", query);
         fetch(`https://api.fda.gov/drug/label.json?search=openfda.product_ndc:${query}+OR+openfda.brand_name:${query}`)
             .then(response => response.json())
             .then(data => {
@@ -91,7 +92,11 @@ document.addEventListener("DOMContentLoaded", () => {
             inputStream: { name: "Live", type: "LiveStream", target: video },
             decoder: { readers: ["ean_reader"] }
         }, err => {
-            if (!err) Quagga.start();
+            if (err) {
+                console.error("Quagga init failed:", err);
+                return;
+            }
+            Quagga.start();
         });
 
         Quagga.onDetected(data => {
@@ -148,10 +153,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     chatProviderButton.addEventListener("click", () => {
-        chatbox.style.display = "block";
+        chatbox.style.display = chatbox.style.display === "none" ? "block" : "none";
     });
 
-    chatToggleButton.addEventListener("click", () => {
+    chatMinimizeButton.addEventListener("click", () => {
         chatbox.classList.toggle("minimized");
     });
 

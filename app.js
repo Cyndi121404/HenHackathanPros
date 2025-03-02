@@ -8,17 +8,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const historyList = document.getElementById("history-list");
     const reminderButton = document.getElementById("set-reminder");
     const themeButton = document.getElementById("toggle-theme");
+    const chatContainer = document.querySelector(".chat-provider");
+    const chatProviderButton = document.getElementById("chat-provider-button");
     const chatbox = document.getElementById("chatbox");
+    const chatMinimizeButton = document.getElementById("chat-minimize-button");
     const chatMessages = document.getElementById("chat-messages");
     const messageInput = document.getElementById("message-input");
     const sendButton = document.getElementById("send-button");
-    const chatToggleButton = document.getElementById("chat-toggle");
-    const chatProviderButton = document.getElementById("chat-provider-button");
-
+    
     let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
     let chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || [];
 
-    chatbox.style.display = "none";
+    chatbox.classList.add("hidden");
 
     function updateHistory() {
         historyList.innerHTML = "";
@@ -41,40 +42,38 @@ document.addEventListener("DOMContentLoaded", () => {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    function fetchDrugInfo(query) {
-        fetch(`https://api.fda.gov/drug/label.json?search=openfda.product_ndc:${query}+OR+openfda.brand_name:${query}`)
-            .then(response => response.json())
-            .then(data => {
-                if (!data.results || data.results.length === 0) {
-                    throw new Error("No results found");
-                }
-
-                let drug = data.results[0];
-                let name = drug.openfda.brand_name ? drug.openfda.brand_name[0] : "Unknown";
-                let facts = drug.indications_and_usage ? drug.indications_and_usage[0] : "No details found";
-
-                drugNameElem.textContent = name;
-                drugFactsElem.textContent = facts;
-
-                if (!searchHistory.includes(query)) {
-                    searchHistory.push(query);
-                    localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
-                    updateHistory();
-                }
-            })
-            .catch(error => {
-                console.error("Error fetching drug info:", error);
-                drugNameElem.textContent = "Not Found";
-                drugFactsElem.textContent = "No data available";
-            });
-    }
-
-    searchButton.addEventListener("click", () => {
-        let query = drugInput.value.trim();
-        if (query) fetchDrugInfo(query);
+    chatProviderButton.addEventListener("click", () => {
+        chatContainer.innerHTML = "";
+        chatbox.classList.remove("hidden");
+        chatContainer.appendChild(chatbox);
     });
 
-    async function activateCamera() {
+    chatMinimizeButton.addEventListener("click", () => {
+        chatbox.classList.add("hidden");
+        chatContainer.innerHTML = '<button id="chat-provider-button">💬 Chat with Provider</button>';
+        document.getElementById("chat-provider-button").addEventListener("click", () => {
+            chatContainer.innerHTML = "";
+            chatbox.classList.remove("hidden");
+            chatContainer.appendChild(chatbox);
+        });
+    });
+
+    function sendMessage() {
+        let messageText = messageInput.value.trim();
+        if (messageText === "") return;
+
+        chatHistory.push(messageText);
+        localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
+        updateChatHistory();
+        messageInput.value = "";
+    }
+
+    sendButton.addEventListener("click", sendMessage);
+    messageInput.addEventListener("keypress", event => {
+        if (event.key === "Enter") sendMessage();
+    });
+
+    scanButton.addEventListener("click", async () => {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ video: true });
             video.srcObject = stream;
@@ -82,28 +81,11 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (error) {
             console.error("Error accessing the camera:", error);
         }
-    }
+    });
 
-    scanButton.addEventListener("click", async () => {
-        await activateCamera();
-        video.style.display = "block";
-        Quagga.init({
-            inputStream: { name: "Live", type: "LiveStream", target: video },
-            decoder: { readers: ["ean_reader"] }
-        }, err => {
-            if (!err) Quagga.start();
-        });
-
-        Quagga.onDetected(data => {
-            Quagga.stop();
-            video.style.display = "none";
-            
-            let tracks = video.srcObject.getTracks();
-            tracks.forEach(track => track.stop());
-
-            let barcode = data.codeResult.code;
-            fetchDrugInfo(barcode);
-        });
+    searchButton.addEventListener("click", () => {
+        let query = drugInput.value.trim();
+        if (query) fetchDrugInfo(query);
     });
 
     reminderButton.addEventListener("click", () => {
@@ -132,28 +114,33 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.classList.toggle("grayscale");
     });
 
-    function sendMessage() {
-        let messageText = messageInput.value.trim();
-        if (messageText === "") return;
+    function fetchDrugInfo(query) {
+        fetch(`https://api.fda.gov/drug/label.json?search=openfda.product_ndc:${query}+OR+openfda.brand_name:${query}`)
+            .then(response => response.json())
+            .then(data => {
+                if (!data.results || data.results.length === 0) {
+                    throw new Error("No results found");
+                }
 
-        chatHistory.push(messageText);
-        localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
-        updateChatHistory();
-        messageInput.value = "";
+                let drug = data.results[0];
+                let name = drug.openfda.brand_name ? drug.openfda.brand_name[0] : "Unknown";
+                let facts = drug.indications_and_usage ? drug.indications_and_usage[0] : "No details found";
+
+                drugNameElem.textContent = name;
+                drugFactsElem.textContent = facts;
+
+                if (!searchHistory.includes(query)) {
+                    searchHistory.push(query);
+                    localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+                    updateHistory();
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching drug info:", error);
+                drugNameElem.textContent = "Not Found";
+                drugFactsElem.textContent = "No data available";
+            });
     }
-
-    sendButton.addEventListener("click", sendMessage);
-    messageInput.addEventListener("keypress", event => {
-        if (event.key === "Enter") sendMessage();
-    });
-
-    chatProviderButton.addEventListener("click", () => {
-        chatbox.style.display = "block";
-    });
-
-    chatToggleButton.addEventListener("click", () => {
-        chatbox.classList.toggle("minimized");
-    });
 
     updateHistory();
     updateChatHistory();

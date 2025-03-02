@@ -42,7 +42,7 @@ header h1 {
     background: #211C84;
     border-radius: 75px;
     padding: 20px;
-    height: 400px;
+    height: 300px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -60,7 +60,7 @@ button {
     margin: 10px 0;
     border-radius: 75px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 20px;
     transition: 0.3s;
 }
 /* Remove bullets from the search history list */

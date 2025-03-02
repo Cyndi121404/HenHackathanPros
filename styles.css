@@ -125,6 +125,7 @@ button {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    color: #2B303A;
 }
 
 .chat-input {

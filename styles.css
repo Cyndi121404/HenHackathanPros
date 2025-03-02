@@ -98,8 +98,8 @@ button {
     display: none;
     width: 100%;
     height: 300px;
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
+    background-color: #211C84;
+    border: 1px solid #211C84;
     position: relative;
     overflow: hidden;
 }
@@ -110,8 +110,8 @@ button {
 
 /* Chat header */
 .chat-header {
-    background-color: #4CAF50;
-    color: white;
+    background-color: #211C84;
+    color: #B5A8D5;
     padding: 10px;
     text-align: center;
 }
@@ -130,13 +130,13 @@ button {
     position: absolute;
     bottom: 0;
     width: 100%;
-    background-color: #fff;
+    background-color: #B5A8D5;
+    color: #211C84;
 }
 
 .chat-input input {
     flex: 1;
     padding: 5px;
-    margin-right: 5px;
 }
 
 .chat-input button {
@@ -145,7 +145,8 @@ button {
 
 /* Individual message styling */
 .message {
-    background-color: #e1f7d5;
+    background-color: #B5A8D5;
+    color:#211C84
     padding: 8px;
     margin-bottom: 5px;
     border-radius: 5px;

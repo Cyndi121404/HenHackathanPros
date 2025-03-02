@@ -123,7 +123,7 @@ button {
 #drug-input {
     width: 100%;
     padding: 12px;
-    font-size: 20px;
+    font-size: 18px;
     border-radius: 75px;
     border: none;
     outline: none;
@@ -179,9 +179,13 @@ button {
 
 /* Input field styling */
 .chat-input input {
-    flex: 1;
-    padding: 5px;
-    margin-right: 5px;
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+    border-radius: 75px;
+    border: none;
+    outline: none;
+    text-align: center;
 }
 
 /* Button styling */

@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Initially, hide the chatbox and show the chat button
     chatbox.classList.add("hidden");
     chatMessages.style.overflowY = "auto";
-    chatMessages.style.maxHeight = "300px";
+    chatMessages.style.maxHeight = "200px";
 
     // Apply hover effect for shadow (bottom and right sides only)
     const lightBlueColor = "#7A73D1"; // Light blue shade for the shadow
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
     chatMinimizeButton.addEventListener("click", () => {
         // Hide the chatbox and show the grid-box with the chat provider button again
         chatbox.style.display = "none"; // Hide the chatbox
-        chatContainer.style.display = "block"; // Show the grid-box with the chat button
+        chatContainer.style.display = "flex"; // Show the grid-box with the chat button
     });
 
     function sendMessage() {

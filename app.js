@@ -61,20 +61,22 @@ document.addEventListener("DOMContentLoaded", () => {
             messageDiv.textContent = msg;
             chatMessages.appendChild(messageDiv);
         });
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+        // Scroll to the bottom of the entire chat container (including the input)
+        chatbox.scrollTop = chatbox.scrollHeight;
     }
+
     chatProviderButton.addEventListener("click", () => {
         // Hide the entire grid box containing the chat provider button and show the chatbox
         chatContainer.style.display = "none";  // Hides the entire grid-box with the button
         chatbox.style.display = "block"; // Shows the chatbox
     });
-    
+
     chatMinimizeButton.addEventListener("click", () => {
         // Hide the chatbox and show the grid-box with the chat provider button again
         chatbox.style.display = "none"; // Hide the chatbox
         chatContainer.style.display = "block"; // Show the grid-box with the chat button
     });
-    
+
     function sendMessage() {
         let messageText = messageInput.value.trim();
         if (messageText === "") return;

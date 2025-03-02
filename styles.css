@@ -2,7 +2,6 @@
 body {
     font-family: 'Arial', sans-serif;
     background-color: #4D55CC;
-    
     color: #B5A8D5;
     margin: 0;
     padding: 0;
@@ -63,16 +62,17 @@ button {
     font-size: 20px;
     transition: 0.3s;
 }
+
 /* Remove bullets from the search history list */
 #history-list {
-    list-style-type: none;  /* Removes default bullets */
-    padding: 0;  /* Removes default padding */
-    margin: 0;  /* Removes default margin */
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
 }
 
 /* Style the history list items */
 #history-list li {
-    cursor: pointer;  /* Makes items clickable */
+    cursor: pointer;
     padding: 10px 15px;
     background: #B5A8D5;
     color: #2B303A;
@@ -86,22 +86,73 @@ button {
 #history-list li:hover {
     background: #4D55CC;
 }
+
 /* Grayscale Mode */
 .grayscale {
     filter: grayscale(100%);
     transition: filter 0.3s ease-in-out;
 }
-/* Initially hide the chatbox */
+
+/* Chatbox Styling */
 .chatbox {
-    display: none; /* Hidden by default */
+    display: none;
+    width: 100%;
+    height: 300px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    position: relative;
+    overflow: hidden;
 }
 
-/* Optionally, you can add a class for when the chatbox is visible */
 .chatbox.visible {
-    display: block; /* Visible when toggled */
+    display: block;
 }
 
-/* Hide the button when chatbox is visible */
+/* Chat header */
+.chat-header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+.chat-messages {
+    padding: 10px;
+    height: calc(100% - 80px); /* Adjust height to fit within the chatbox */
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-input {
+    display: flex;
+    padding: 10px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #fff;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 5px;
+    margin-right: 5px;
+}
+
+.chat-input button {
+    padding: 5px;
+}
+
+/* Individual message styling */
+.message {
+    background-color: #e1f7d5;
+    padding: 8px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    max-width: 80%;
+}
+
+/* Hide chat provider button when chatbox is visible */
 .chat-provider.hidden {
     display: none;
 }

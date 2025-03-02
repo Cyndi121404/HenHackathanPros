@@ -156,3 +156,19 @@ button {
 .chat-provider.hidden {
     display: none;
 }
+/* Minimize Video Button Styling */
+#minimize-video {
+    background-color: #B5A8D5;
+    color: #2B303A;
+    border: none;
+    padding: 8px 12px;
+    margin: 10px 0;
+    border-radius: 75px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+#minimize-video:hover {
+    background: #4D55CC;
+}

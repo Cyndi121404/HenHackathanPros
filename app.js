@@ -136,6 +136,24 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
     });
+    document.addEventListener("DOMContentLoaded", () => {
+        // Existing elements
+        const scanButton = document.getElementById("start-scan");
+        const video = document.getElementById("camera-preview");
+        const minimizeVideoButton = document.getElementById("minimize-video"); // New minimize video button
+    
+        // Initially, set the video preview to be visible
+        let videoVisible = true;
+    
+        // Toggle visibility of the video preview
+        minimizeVideoButton.addEventListener("click", () => {
+            if (videoVisible) {
+                video.style.display = "none"; // Hide the video preview
+            } else {
+                video.style.display = "block"; // Show the video preview
+            }
+            videoVisible = !videoVisible; // Toggle the visibility state
+        });
 
     themeButton.addEventListener("click", () => {
         document.body.classList.toggle("grayscale");

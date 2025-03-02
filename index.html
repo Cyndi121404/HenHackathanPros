@@ -37,20 +37,19 @@
         </div> 
         
 
-        <div class="grid-box chat-provider">
-            <button id="chat-provider-button">Chat with Provider</button>
-        </div>
+        <!-- Chatbox should start as hidden by default -->
+<div class="grid-box chatbox hidden" id="chatbox">
+    <div class="chat-header">
+        <h2>Chat with Provider</h2>
+        <button id="chat-minimize-button">➖</button>
+    </div>
+    <div id="chat-messages" class="chat-messages"></div>
+    <div class="chat-input">
+        <input type="text" id="message-input" placeholder="Type a message...">
+        <button id="send-button">Send</button>
+    </div>
+</div>
 
-        <div class="grid-box chatbox hidden" id="chatbox">
-            <div class="chat-header">
-                <h2>Chat with Provider</h2>
-                <button id="chat-minimize-button">➖</button>
-            </div>
-            <div id="chat-messages" class="chat-messages"></div>
-            <div class="chat-input">
-                <input type="text" id="message-input" placeholder="Type a message...">
-                <button id="send-button">Send</button>
-            </div>
             
         </div>
         <div class="grid-box reminder">

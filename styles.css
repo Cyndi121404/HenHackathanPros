@@ -100,6 +100,7 @@ button {
     width: 100%;
     height: 200px;
     background-color: #211C84;
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;

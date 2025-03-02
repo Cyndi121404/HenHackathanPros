@@ -63,16 +63,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     chatProviderButton.addEventListener("click", () => {
         // Hide the chat provider button and show the chatbox
-        chatProviderButton.classList.add("hidden"); // Hide the button
-        chatbox.classList.remove("hidden"); // Show the chatbox
-        chatbox.classList.add("visible"); // Optionally, if you want to use an additional class for visibility
+        chatProviderButton.style.display = "none"; // Hide the chat button
+        chatbox.style.display = "block"; // Show the chatbox
     });
     
     chatMinimizeButton.addEventListener("click", () => {
         // Hide the chatbox and show the button again
-        chatbox.classList.add("hidden"); // Hide the chatbox
-        chatProviderButton.classList.remove("hidden"); // Show the chat provider button
+        chatbox.style.display = "none"; // Hide the chatbox
+        chatProviderButton.style.display = "block"; // Show the chat provider button
     });
+    
     
 
     function sendMessage() {

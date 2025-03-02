@@ -62,3 +62,26 @@ button {
     font-size: 14px;
     transition: 0.3s;
 }
+/* Remove bullets from the search history list */
+#history-list {
+    list-style-type: none;  /* Removes default bullets */
+    padding: 0;  /* Removes default padding */
+    margin: 0;  /* Removes default margin */
+}
+
+/* Style the history list items */
+#history-list li {
+    cursor: pointer;  /* Makes items clickable */
+    padding: 10px 15px;
+    background: #F4772A;
+    color: #2B303A;
+    margin: 5px 0;
+    border-radius: 12px;
+    text-align: center;
+    transition: background 0.3s ease;
+}
+
+/* Change background color when hovered */
+#history-list li:hover {
+    background: #e0631c;
+}

@@ -17,6 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const sendButton = document.getElementById("send-button");
     const gridBoxes = document.querySelectorAll('.grid-box'); // Select all grid boxes
 
+    const reminderList = document.getElementById("reminder-list"); // List to display reminders
+
     let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
     let chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || [];
 
@@ -65,30 +67,14 @@ document.addEventListener("DOMContentLoaded", () => {
         // Hide the entire grid box containing the chat provider button and show the chatbox
         chatContainer.style.display = "none";  // Hides the entire grid-box with the button
         chatbox.style.display = "block"; // Shows the chatbox
-    
-        // Recalculate the grid layout after the toggle
-        setTimeout(() => {
-            // Force the grid container to refresh its layout after the toggle
-            document.querySelector(".main-container").style.display = "grid";
-        }, 0);
     });
     
     chatMinimizeButton.addEventListener("click", () => {
         // Hide the chatbox and show the grid-box with the chat provider button again
         chatbox.style.display = "none"; // Hide the chatbox
         chatContainer.style.display = "block"; // Show the grid-box with the chat button
-    
-        // Recalculate the grid layout after the toggle
-        setTimeout(() => {
-            // Force the grid container to refresh its layout after the toggle
-            document.querySelector(".main-container").style.display = "grid";
-        }, 0);
     });
     
-    
-    
-    
-
     function sendMessage() {
         let messageText = messageInput.value.trim();
         if (messageText === "") return;
@@ -130,11 +116,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     let delay = reminderTime - now;
                     if (delay > 0) {
+                        // Add reminder to the list
+                        let reminderItem = document.createElement("li");
+                        reminderItem.textContent = `Reminder set for: ${time}`;
+                        reminderList.appendChild(reminderItem);
+
                         setTimeout(() => {
                             new Notification("Medication Reminder", {
-                                body: `Time to take ${drugNameElem.textContent}`
+                                body: `Time to take your medication!`
                             });
+
+                            console.log(`Notification triggered at ${time}`);
                         }, delay);
+                    } else {
+                        alert("The time you entered has already passed today.");
                     }
                 }
             });

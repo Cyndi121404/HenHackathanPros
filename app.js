@@ -17,6 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const sendButton = document.getElementById("send-button");
     const gridBoxes = document.querySelectorAll('.grid-box'); // Select all grid boxes
 
+    const reminderList = document.getElementById("reminder-list"); // List to display reminders
+
     let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
     let chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || [];
 
@@ -73,9 +75,6 @@ document.addEventListener("DOMContentLoaded", () => {
         chatContainer.style.display = "block"; // Show the grid-box with the chat button
     });
     
-    
-    
-
     function sendMessage() {
         let messageText = messageInput.value.trim();
         if (messageText === "") return;
@@ -117,11 +116,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     let delay = reminderTime - now;
                     if (delay > 0) {
+                        // Add reminder to the list
+                        let reminderItem = document.createElement("li");
+                        reminderItem.textContent = `Reminder set for: ${time}`;
+                        reminderList.appendChild(reminderItem);
+
                         setTimeout(() => {
                             new Notification("Medication Reminder", {
-                                body: `Time to take ${drugNameElem.textContent}`
+                                body: `Time to take your medication!`
                             });
+
+                            console.log(`Notification triggered at ${time}`);
                         }, delay);
+                    } else {
+                        alert("The time you entered has already passed today.");
                     }
                 }
             });

@@ -14,9 +14,10 @@
     </header>
 
     <div class="main-container">
-        <div class="grid-box sidebar">
-            <h2>Search History</h2>
-            <ul id="history-list"></ul>
+
+        <div class="grid-box manual-search">
+            <input type="text" id="drug-input" placeholder="Enter Drug Name or NDC">
+            <button id="search-drug">🔍 Search</button>
         </div>
 
         <div class="grid-box scanner-container">
@@ -24,9 +25,9 @@
             <video id="camera-preview"></video>
         </div>
 
-        <div class="grid-box manual-search">
-            <input type="text" id="drug-input" placeholder="Enter Drug Name or NDC">
-            <button id="search-drug">🔍 Search</button>
+          <div class="grid-box sidebar">
+            <h2>Search History</h2>
+            <ul id="history-list"></ul>
         </div>
 
         <div class="grid-box drug-info">
@@ -38,9 +39,6 @@
 
         <div class="grid-box chat-provider">
             <button id="chat-provider-button">💬 Chat with Provider</button>
-        </div>
-
-        <div class="grid-box chatbox" id="chatbox">
             <div class="chat-header">
                 <h2>Chat with Assistant</h2>
                 <button id="chat-minimize-button">➖</button>
@@ -49,6 +47,13 @@
             <div class="chat-input">
                 <input type="text" id="message-input" placeholder="Type a message...">
                 <button id="send-button">Send</button>
+        </div>
+ <div class="grid-box sidebar">
+            <h2>.</h2>
+
+        </div>
+
+            
             </div>
         </div>
     </div>

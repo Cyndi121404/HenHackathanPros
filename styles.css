@@ -7,9 +7,9 @@ body {
     padding: 0;
     display: flex;
     justify-content: center; /* Horizontally center content */
-    align-items: center; /* Vertically center content */
+    align-items: flex-start; /* Align content to the top */
     height: 100vh;
-    flex-direction: column; /* Allow content to stack */
+    flex-direction: column;
 }
 
 /* Header */
@@ -24,15 +24,15 @@ header h1 {
     margin: 0;
 }
 
-/* Main container to hold elements side by side */
+/* Main container for dashboard */
 .main-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: center; /* Center elements horizontally */
-    align-items: center; /* Center elements vertically */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Three columns of equal width */
+    gap: 20px;
     width: 100%;
-    max-width: 1200px; /* Limit the max width of the main content */
+    max-width: 90%; /* Adjust grid to 90% of the page */
     padding: 20px;
+    margin: 0 auto;
 }
 
 /* Sidebar (History) */
@@ -40,76 +40,72 @@ header h1 {
     background: #2a1d16;
     padding: 10px;
     border-radius: 10px;
-    width: 30%; /* Adjust width for side-by-side layout */
-    max-width: 400px;
-    margin-right: 20px; /* Add some space between the sidebar and chatbox */
-}
-
-/* Chatbox Styling */
-.chatbox {
-    position: relative;
-    width: 30%; /* Adjust width for side-by-side layout */
-    height: 400px;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.3s ease;
-    overflow: hidden;
+    height: 400px; /* Set height for sidebar */
+    overflow-y: auto; /* Allow scrolling if content overflows */
 }
 
 /* Scanner container */
 .scanner-container {
-    margin: 15px 0;
-    text-align: center;
-    width: 30%; /* Adjust width for side-by-side layout */
-    max-width: 300px;
-    margin-bottom: 20px; /* Add space below scanner */
-}
-
-/* Drug Info */
-.drug-info {
-    margin-top: 15px;
-    padding: 15px;
-    background: #3b2a20;
+    background: white;
     border-radius: 10px;
-    color: #fff;
+    padding: 20px;
+    height: 400px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Buttons */
+/* Manual Search */
+.manual-search {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Drug Info (Make it bigger) */
+.drug-info {
+    background: #3b2a20;
+    color: #fff;
+    border-radius: 10px;
+    padding: 30px; /* Increased padding for larger space */
+    height: 500px; /* Increased height for bigger size */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Chatbox Section (Make chat button smaller) */
+#chatbox {
+    grid-column: span 3; /* Make chatbox take up full width */
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    height: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Chat button (Smaller size) */
 button {
     background: #a8d8ff;
     color: #2a1d16;
     border: none;
-    padding: 10px 15px;
+    padding: 8px 12px; /* Smaller padding for smaller button */
     margin: 10px 0;
     border-radius: 10px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 14px; /* Smaller font size */
     transition: 0.3s;
-}
-
-button:hover {
-    background: #7ab8e6;
-}
-
-/* Input */
-input {
-    width: 80%;
-    padding: 10px;
-    border: 2px solid #a8d8ff;
-    border-radius: 10px;
-    margin: 10px 0;
-    font-size: 16px;
-    text-align: center;
-}
-
-/* Accessibility Mode */
-.grayscale {
-    filter: grayscale(100%);
-    background-color: #222;
-    color: #ddd;
 }

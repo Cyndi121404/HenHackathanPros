@@ -1,13 +1,9 @@
-Share
-
-
-You said:
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drug Info Scanner</title>
+    <title>DoseDoodle</title>
     <link rel="stylesheet" href="styles.css">
     <script defer src="app.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
@@ -17,41 +13,47 @@ You said:
         <h1>DoseDoodle</h1>
     </header>
 
-    <button id="toggle-theme">🌙 Toggle Accessibility</button>
-
-    <div class="scanner-container">
-        <button id="start-scan">📷 Scan Barcode</button>
-        <video id="camera-preview"></video>
-    </div>
-
-    <div class="manual-search">
-        <input type="text" id="drug-input" placeholder="Enter Drug Name or NDC">
-        <button id="search-drug">🔍 Search</button>
-    </div>
-
-    <div class="drug-info">
-        <h2>Drug Information</h2>
-        <p id="drug-name">Name: <span>-</span></p>
-        <p id="drug-facts">Facts: <span>-</span></p>
-        <button id="set-reminder">⏰ Set Reminder</button>
-    </div>
-
-    <div class="sidebar">
-        <h2>Search History</h2>
-        <ul id="history-list"></ul>
-    </div>
-
-    <button id="chat-provider-button">💬 Chat with Provider</button>
-
-    <div id="chatbox" class="hidden">
-        <div class="chat-header">
-            <h2>Chat with Assistant</h2>
-            <button id="chat-minimize-button">➖</button>
+    <div class="main-container">
+        <!-- Sidebar for Search History -->
+        <div class="sidebar">
+            <h2>Search History</h2>
+            <ul id="history-list"></ul>
         </div>
-        <div id="chat-messages" class="chat-messages"></div>
-        <div class="chat-input">
-            <input type="text" id="message-input" placeholder="Type a message...">
-            <button id="send-button">Send</button>
+
+        <!-- Scanner Section -->
+        <div class="scanner-container">
+            <button id="start-scan">📷 Scan Barcode</button>
+            <video id="camera-preview"></video>
+        </div>
+
+        <!-- Manual Search Section -->
+        <div class="manual-search">
+            <input type="text" id="drug-input" placeholder="Enter Drug Name or NDC">
+            <button id="search-drug">🔍 Search</button>
+        </div>
+
+        <!-- Drug Info Section -->
+        <div class="drug-info">
+            <h2>Drug Information</h2>
+            <p id="drug-name">Name: <span>-</span></p>
+            <p id="drug-facts">Facts: <span>-</span></p>
+            <button id="set-reminder">⏰ Set Reminder</button>
+        </div>
+
+        <!-- Chat Provider Button -->
+        <button id="chat-provider-button">💬 Chat with Provider</button>
+
+        <!-- Chatbox -->
+        <div id="chatbox" class="hidden">
+            <div class="chat-header">
+                <h2>Chat with Assistant</h2>
+                <button id="chat-minimize-button">➖</button>
+            </div>
+            <div id="chat-messages" class="chat-messages"></div>
+            <div class="chat-input">
+                <input type="text" id="message-input" placeholder="Type a message...">
+                <button id="send-button">Send</button>
+            </div>
         </div>
     </div>
 </body>

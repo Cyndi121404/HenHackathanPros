@@ -130,8 +130,7 @@ button {
     position: absolute;
     bottom: 0;
     width: 100%;
-    background-color: #B5A8D5;
-    color: #211C84;
+    background-color: #211C84;
 }
 
 .chat-input input {

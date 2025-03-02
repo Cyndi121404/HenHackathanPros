@@ -9,7 +9,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
 </head>
 <body>
-    <div id="particles-js"></div>
+    <div id="particles-js" style="height: 100vh;"></div>
 
     <header>
         <h1>DoseDoodle</h1>
@@ -17,50 +17,55 @@
 
     <div class="main-container">
         <div class="grid-box manual-search">
-            <input type="text" id="drug-input" placeholder="Enter Drug Name or NDC"><button id="search-drug">Search</button>
+            <input type="text" id="drug-input" placeholder="Enter Drug Name or NDC" aria-label="Enter Drug Name or NDC">
+            <button id="search-drug" aria-label="Search for Drug Information">Search</button>
         </div>
 
         <div class="grid-box scanner-container">
-            <button id="start-scan">Scan Barcode</button>
-            <video id="camera-preview"></video>
+            <button id="start-scan" aria-label="Start Barcode Scan">Scan Barcode</button>
+            <video id="camera-preview" aria-label="Camera preview for barcode scanning"></video>
             <div id="barcode-overlay" class="barcode-overlay"></div>
         </div>
+
         <div class="grid-box sidebar">
             <h2>Search History</h2>
             <ul id="history-list"></ul>
         </div>
-       
 
         <div class="grid-box drug-info">
             <h2>Drug Information</h2>
             <p id="drug-name">Name: <span>-</span></p>
+            <p id="drug-facts">Facts: <span>-</span></p>
             <p id="drug-dosing">Dosing Recommendation: <span>-</span></p>
+            <p id="drug-side-effects">Side Effects: <span>-</span></p>
         </div>
-        
-        
 
         <!-- Chat provider button -->
-<div class="grid-box chat-provider">
-    <button id="chat-provider-button">Chat with Provider</button>
-</div>
+        <div class="grid-box chat-provider">
+            <button id="chat-provider-button" aria-label="Open Chat with Provider">Chat with Provider</button>
+        </div>
 
-<!-- Chatbox that will be hidden initially -->
-<div class="grid-box chatbox" id="chatbox">
-    <div class="chat-header">
-        <button id="chat-minimize-button">x</button>
-        <h2>Chat with Provider</h2>
-        
-    </div>
-    <div id="chat-messages" class="chat-messages"></div>
-    <div class="chat-input">
-        <input type="text" id="message-input" placeholder="Type a message...">
-        <button id="send-button">Send</button>
-    </div>
-</div>
+        <!-- Chatbox that will be hidden initially -->
+        <div class="grid-box chatbox" id="chatbox" style="display: none;">
+            <div class="chat-header">
+                <button id="chat-minimize-button" aria-label="Minimize Chat">x</button>
+                <h2>Chat with Provider</h2>
+            </div>
+            <div id="chat-messages" class="chat-messages"></div>
+            <div class="chat-input">
+                <input type="text" id="message-input" placeholder="Type a message..." aria-label="Type your message here">
+                <button id="send-button" aria-label="Send Message">Send</button>
+            </div>
+        </div>
 
         <div class="grid-box reminder">
-            <button id="set-reminder">Set Reminder</button>
-            <button id="toggle-theme">Toggle Accesability Theme</button>
+            <button id="set-reminder" aria-label="Set a Medication Reminder">Set Reminder</button>
+            <button id="toggle-theme" aria-label="Toggle Accessibility Theme">Toggle Accesability Theme</button>
+            <h3>Reminder List:</h3>
+            <!-- List to display reminders -->
+            <ul id="reminder-list"></ul>
+            <!-- Clear Reminders Button -->
+            <button id="clear-reminders" aria-label="Clear All Reminders">Clear Reminders</button>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>

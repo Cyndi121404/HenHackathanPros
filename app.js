@@ -18,9 +18,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const gridBoxes = document.querySelectorAll('.grid-box'); // Select all grid boxes
 
     const reminderList = document.getElementById("reminder-list"); // List to display reminders
+    const clearRemindersButton = document.getElementById("clear-reminders");
 
     let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
     let chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || [];
+    let storedReminders = JSON.parse(localStorage.getItem("reminders")) || [];
 
     // Initially, hide the chatbox and show the chat button
     chatbox.classList.add("hidden");
@@ -122,6 +124,10 @@ document.addEventListener("DOMContentLoaded", () => {
                         reminderItem.textContent = `Reminder set for: ${time}`;
                         reminderList.appendChild(reminderItem);
 
+                        // Store the reminder in localStorage to persist it
+                        storedReminders.push({ time, reminderTime });
+                        localStorage.setItem("reminders", JSON.stringify(storedReminders));
+
                         setTimeout(() => {
                             new Notification("Medication Reminder", {
                                 body: `Time to take your medication!`
@@ -136,45 +142,29 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
     });
-    scanButton.addEventListener("click", async () => {
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-            video.srcObject = stream;
-            video.play();
-    
-            // Start Quagga (barcode scanning) when the camera is active
-            Quagga.init({
-                inputStream: {
-                    name: "Live",
-                    type: "LiveStream",
-                    target: video, // The video element where the scan is happening
-                },
-                decoder: {
-                    readers: ["ean_reader", "upc_reader", "code_128_reader"], // Add other readers as needed
-                },
-            }, function(err) {
-                if (err) {
-                    console.error(err);
-                    return;
-                }
-                Quagga.start();
-            });
-    
-            // Handle scanned barcode
-            Quagga.onDetected(function(result) {
-                const barcode = result.codeResult.code; // Get the scanned barcode
-                const barcodeOverlay = document.getElementById("barcode-overlay");
-                
-                // Update the overlay text and show it
-                barcodeOverlay.textContent = `Scanned: ${barcode}`;
-                barcodeOverlay.style.display = "flex"; // Show the overlay
-            });
-    
-        } catch (error) {
-            console.error("Error accessing the camera:", error);
-        }
+
+    // Handle the 'Clear Reminders' button click event
+    clearRemindersButton.addEventListener("click", () => {
+        // Remove all reminders from the list
+        reminderList.innerHTML = ""; // Clear the UI list
+
+        // Clear reminders from localStorage
+        localStorage.removeItem("reminders");
+        storedReminders = [];
     });
-    
+
+    // Update the reminder list on page load
+    function updateReminders() {
+        reminderList.innerHTML = "";
+        storedReminders.forEach(reminder => {
+            let reminderItem = document.createElement("li");
+            reminderItem.textContent = `Reminder set for: ${reminder.time}`;
+            reminderList.appendChild(reminderItem);
+        });
+    }
+
+    // Initialize reminder list on page load
+    updateReminders();
 
     themeButton.addEventListener("click", () => {
         document.body.classList.toggle("grayscale");
@@ -192,18 +182,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (!data.results || data.results.length === 0) {
                     throw new Error("No results found");
                 }
-    
+
                 let drug = data.results[0];
                 let name = drug.openfda.brand_name ? drug.openfda.brand_name[0] : "Unknown";
                 let facts = drug.indications_and_usage ? drug.indications_and_usage[0] : "No details found";
                 let dosing = drug.dosage_and_administration ? drug.dosage_and_administration[0] : "No dosing recommendations found";
                 let sideEffects = drug.warnings_and_precautions ? drug.warnings_and_precautions[0] : "No side effects listed";
-    
+
                 drugNameElem.textContent = name;
                 drugFactsElem.textContent = facts;
                 document.getElementById("drug-dosing").textContent = `Dosing Recommendation: ${dosing}`;
                 document.getElementById("drug-side-effects").textContent = `Side Effects: ${sideEffects}`;
-    
+
                 if (!searchHistory.includes(query)) {
                     searchHistory.push(query);
                     localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
@@ -218,7 +208,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.getElementById("drug-side-effects").textContent = "No data available";
             });
     }
-    
+
     particlesJS("particles-js", {
         particles: {
             number: {
@@ -271,19 +261,7 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         retina_detect: true
     });
-    
 
-    const clearHistoryButton = document.createElement("button");
-clearHistoryButton.id = "clear-history";
-clearHistoryButton.textContent = "Clear History";
-document.querySelector(".sidebar").appendChild(clearHistoryButton);
-
-clearHistoryButton.addEventListener("click", () => {
-    localStorage.removeItem("searchHistory");
-    searchHistory = [];
     updateHistory();
-});
-
-updateHistory();
     updateChatHistory();
 });

@@ -10,10 +10,7 @@ body {
     align-items: flex-start;
     height: 100vh;
     flex-direction: column;
-
-        overflow: hidden;
-
-    
+    overflow: hidden;
 }
 
 /* Header */
@@ -219,4 +216,20 @@ button {
     align-items: center;
     text-align: center;
     z-index: 10;
+}
+
+/* Reminder List Styling */
+#reminder-list {
+    max-height: 200px;  /* Set the height to allow scrolling */
+    overflow-y: auto;    /* Make sure vertical scrolling is enabled */
+    padding-right: 10px; /* Space for scrollbar */
+    margin-top: 10px;    /* Add some space at the top for aesthetics */
+}
+
+/* Styling for the Reminder Box */
+#reminder-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

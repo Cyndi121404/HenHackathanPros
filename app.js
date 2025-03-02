@@ -15,14 +15,30 @@ document.addEventListener("DOMContentLoaded", () => {
     const chatMessages = document.getElementById("chat-messages");
     const messageInput = document.getElementById("message-input");
     const sendButton = document.getElementById("send-button");
-    
+    const gridBoxes = document.querySelectorAll('.grid-box'); // Select all grid boxes
+
     let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
     let chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || [];
 
+    // Initially, the chatbox is hidden (minimized) when the page is loaded
     chatbox.classList.add("hidden");
     chatMessages.style.overflowY = "auto";
     chatMessages.style.maxHeight = "300px";
 
+    // Function to randomize border styles
+    function randomizeBorder() {
+        gridBoxes.forEach(box => {
+            const randomWidth = Math.floor(Math.random() * 5) + 1; // Border width between 1px and 5px
+            const randomStyle = ["solid", "dotted", "dashed"][Math.floor(Math.random() * 3)];
+            const randomColor = "#" + Math.floor(Math.random()*16777215).toString(16); // Random hex color
+            box.style.border = `${randomWidth}px ${randomStyle} ${randomColor}`;
+        });
+    }
+
+    // Randomize borders when the page loads
+    randomizeBorder();
+
+    // Update the history list
     function updateHistory() {
         historyList.innerHTML = "";
         searchHistory.forEach(drug => {
@@ -33,6 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // Update the chat history display
     function updateChatHistory() {
         chatMessages.innerHTML = "";
         chatHistory.forEach(msg => {

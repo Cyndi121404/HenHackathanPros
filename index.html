@@ -14,37 +14,33 @@
     </header>
 
     <div class="main-container">
-        <!-- Sidebar for Search History -->
-        <div class="sidebar">
+        <div class="grid-box sidebar">
             <h2>Search History</h2>
             <ul id="history-list"></ul>
         </div>
 
-        <!-- Scanner Section -->
-        <div class="scanner-container">
+        <div class="grid-box scanner-container">
             <button id="start-scan">📷 Scan Barcode</button>
             <video id="camera-preview"></video>
         </div>
 
-        <!-- Manual Search Section -->
-        <div class="manual-search">
+        <div class="grid-box manual-search">
             <input type="text" id="drug-input" placeholder="Enter Drug Name or NDC">
             <button id="search-drug">🔍 Search</button>
         </div>
 
-        <!-- Drug Info Section -->
-        <div class="drug-info">
+        <div class="grid-box drug-info">
             <h2>Drug Information</h2>
             <p id="drug-name">Name: <span>-</span></p>
             <p id="drug-facts">Facts: <span>-</span></p>
             <button id="set-reminder">⏰ Set Reminder</button>
         </div>
 
-        <!-- Chat Provider Button -->
-        <button id="chat-provider-button">💬 Chat with Provider</button>
+        <div class="grid-box chat-provider">
+            <button id="chat-provider-button">💬 Chat with Provider</button>
+        </div>
 
-        <!-- Chatbox -->
-        <div id="chatbox" class="hidden">
+        <div class="grid-box chatbox hidden" id="chatbox">
             <div class="chat-header">
                 <h2>Chat with Assistant</h2>
                 <button id="chat-minimize-button">➖</button>

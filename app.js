@@ -192,14 +192,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (!data.results || data.results.length === 0) {
                     throw new Error("No results found");
                 }
-
+    
                 let drug = data.results[0];
                 let name = drug.openfda.brand_name ? drug.openfda.brand_name[0] : "Unknown";
                 let facts = drug.indications_and_usage ? drug.indications_and_usage[0] : "No details found";
-
+                let dosing = drug.dosage_and_administration ? drug.dosage_and_administration[0] : "No dosing recommendations found";
+                let sideEffects = drug.warnings_and_precautions ? drug.warnings_and_precautions[0] : "No side effects listed";
+    
                 drugNameElem.textContent = name;
                 drugFactsElem.textContent = facts;
-
+                document.getElementById("drug-dosing").textContent = `Dosing Recommendation: ${dosing}`;
+                document.getElementById("drug-side-effects").textContent = `Side Effects: ${sideEffects}`;
+    
                 if (!searchHistory.includes(query)) {
                     searchHistory.push(query);
                     localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
@@ -210,8 +214,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.error("Error fetching drug info:", error);
                 drugNameElem.textContent = "Not Found";
                 drugFactsElem.textContent = "No data available";
+                document.getElementById("drug-dosing").textContent = "No data available";
+                document.getElementById("drug-side-effects").textContent = "No data available";
             });
     }
+    
 
     updateHistory();
     updateChatHistory();

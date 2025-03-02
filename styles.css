@@ -40,9 +40,9 @@ header h1 {
 /* Grid box styling */
 .grid-box {
     background: #211C84;
-    border-radius: 75px;
-    padding: 20px;
-    height: 400px;
+    border-radius: 25px;
+    padding: 50px;
+    height: 250px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -60,7 +60,7 @@ button {
     margin: 10px 0;
     border-radius: 75px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 20px;
     transition: 0.3s;
 }
 /* Remove bullets from the search history list */
@@ -84,10 +84,24 @@ button {
 
 /* Change background color when hovered */
 #history-list li:hover {
-    background: #e0631c;
+    background: #4D55CC;
 }
 /* Grayscale Mode */
 .grayscale {
     filter: grayscale(100%);
     transition: filter 0.3s ease-in-out;
+}
+/* Initially hide the chatbox */
+.chatbox {
+    display: none; /* Hidden by default */
+}
+
+/* Optionally, you can add a class for when the chatbox is visible */
+.chatbox.visible {
+    display: block; /* Visible when toggled */
+}
+
+/* Hide the button when chatbox is visible */
+.chat-provider.hidden {
+    display: none;
 }

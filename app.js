@@ -15,16 +15,31 @@ document.addEventListener("DOMContentLoaded", () => {
     const chatMessages = document.getElementById("chat-messages");
     const messageInput = document.getElementById("message-input");
     const sendButton = document.getElementById("send-button");
-    const reminderList = document.getElementById("reminder-list");
-    
+    const gridBoxes = document.querySelectorAll('.grid-box'); // Select all grid boxes
+
     let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
     let chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || [];
-    let reminders = JSON.parse(localStorage.getItem("reminders")) || [];
 
+    // Initially, hide the chatbox and show the chat button
     chatbox.classList.add("hidden");
     chatMessages.style.overflowY = "auto";
     chatMessages.style.maxHeight = "300px";
 
+    // Function to randomize border styles using the specified colors
+    const borderColors = ["#211C84", "#7A73D1", "#B5A8D5"];
+    function randomizeBorder() {
+        gridBoxes.forEach(box => {
+            const randomWidth = Math.floor(Math.random() * 5) + 1; // Border width between 1px and 5px
+            const randomStyle = ["solid", "dotted", "dashed"][Math.floor(Math.random() * 3)];
+            const randomColor = borderColors[Math.floor(Math.random() * borderColors.length)]; // Pick one of the specified colors
+            box.style.border = `${randomWidth}px ${randomStyle} ${randomColor}`;
+        });
+    }
+
+    // Randomize borders when the page loads
+    randomizeBorder();
+
+    // Update the history list
     function updateHistory() {
         historyList.innerHTML = "";
         searchHistory.forEach(drug => {
@@ -35,6 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // Update the chat history display
     function updateChatHistory() {
         chatMessages.innerHTML = "";
         chatHistory.forEach(msg => {
@@ -45,15 +61,19 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
-
-    function updateReminderList() {
-        reminderList.innerHTML = "";
-        reminders.forEach(reminder => {
-            let li = document.createElement("li");
-            li.textContent = reminder.time;
-            reminderList.appendChild(li);
-        });
-    }
+    chatProviderButton.addEventListener("click", () => {
+        // Hide the chat provider button and show the chatbox
+        chatProviderButton.style.display = "none"; // Hide the chat button
+        chatbox.style.display = "block"; // Show the chatbox
+    });
+    
+    chatMinimizeButton.addEventListener("click", () => {
+        // Hide the chatbox and show the button again
+        chatbox.style.display = "none"; // Hide the chatbox
+        chatProviderButton.style.display = "block"; // Show the chat provider button
+    });
+    
+    
 
     function sendMessage() {
         let messageText = messageInput.value.trim();
@@ -68,22 +88,6 @@ document.addEventListener("DOMContentLoaded", () => {
     sendButton.addEventListener("click", sendMessage);
     messageInput.addEventListener("keypress", event => {
         if (event.key === "Enter") sendMessage();
-    });
-
-    chatProviderButton.addEventListener("click", () => {
-        chatContainer.innerHTML = "";
-        chatbox.classList.remove("hidden");
-        chatContainer.appendChild(chatbox);
-    });
-
-    chatMinimizeButton.addEventListener("click", () => {
-        chatbox.classList.add("hidden");
-        chatContainer.innerHTML = '<button id="chat-provider-button">💬 Chat with Provider</button>';
-        document.getElementById("chat-provider-button").addEventListener("click", () => {
-            chatContainer.innerHTML = "";
-            chatbox.classList.remove("hidden");
-            chatContainer.appendChild(chatbox);
-        });
     });
 
     scanButton.addEventListener("click", async () => {
@@ -101,6 +105,28 @@ document.addEventListener("DOMContentLoaded", () => {
         if (query) fetchDrugInfo(query);
     });
 
+    reminderButton.addEventListener("click", () => {
+        let time = prompt("Enter reminder time (HH:MM 24h format):");
+        if (time) {
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    let now = new Date();
+                    let [hour, minute] = time.split(":").map(Number);
+                    let reminderTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, minute);
+
+                    let delay = reminderTime - now;
+                    if (delay > 0) {
+                        setTimeout(() => {
+                            new Notification("Medication Reminder", {
+                                body: `Time to take ${drugNameElem.textContent}`
+                            });
+                        }, delay);
+                    }
+                }
+            });
+        }
+    });
+
     themeButton.addEventListener("click", () => {
         document.body.classList.toggle("grayscale");
         if (document.body.classList.contains("grayscale")) {
@@ -109,66 +135,6 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.removeItem("theme");
         }
     });
-
-    reminderButton.addEventListener("click", () => {
-        let time = prompt("Enter reminder time (HH:MM 24h format):");
-        if (time) {
-            // Validate time format
-            let timeParts = time.split(":");
-            if (timeParts.length !== 2 || isNaN(timeParts[0]) || isNaN(timeParts[1])) {
-                alert("Invalid time format! Please use HH:MM.");
-                return;
-            }
-
-            let [hour, minute] = timeParts.map(Number);
-
-            // Create reminder and calculate the time difference
-            let now = new Date();
-            let reminderTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, minute);
-            
-            // If the reminder time is already passed today, set it for tomorrow
-            if (reminderTime < now) {
-                reminderTime.setDate(now.getDate() + 1);
-            }
-
-            let delay = reminderTime - now;
-            console.log(`Reminder set for: ${reminderTime} (Delay: ${delay}ms)`); // Debugging the time
-
-            if (delay > 0) {
-                reminders.push({ time: time, reminderTime: reminderTime });
-                localStorage.setItem("reminders", JSON.stringify(reminders));
-                updateReminderList();
-
-                // Request permission for notifications
-                Notification.requestPermission().then(permission => {
-                    if (permission === "granted") {
-                        console.log("Notification permission granted");
-
-                        // Set the notification
-                        setTimeout(() => {
-                            console.log("Notification triggered");
-                            new Notification("Medication Reminder", {
-                                body: `Time to take your medication at ${time}!`
-                            });
-                        }, delay);
-                    } else {
-                        console.log("Notification permission denied.");
-                    }
-                });
-            }
-        }
-    });
-
-    // Update the reminder list on page load
-    updateReminderList();
-
-    // Test a simple notification after 5 seconds to check if the notifications are working
-    setTimeout(() => {
-        console.log("Testing notification...");
-        new Notification("Test Notification", {
-            body: "This is a test notification to verify notifications are working."
-        });
-    }, 5000);
 
     function fetchDrugInfo(query) {
         fetch(`https://api.fda.gov/drug/label.json?search=openfda.product_ndc:${query}+OR+openfda.brand_name:${query}`)

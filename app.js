@@ -27,11 +27,12 @@ document.addEventListener("DOMContentLoaded", () => {
     chatMessages.style.overflowY = "auto";
     chatMessages.style.maxHeight = "300px";
 
-    // Apply hover effect for shadow
+    // Apply hover effect for shadow (bottom and right sides only)
     const lightBlueColor = "#7A73D1"; // Light blue shade for the shadow
     gridBoxes.forEach(box => {
         box.addEventListener("mouseover", () => {
-            box.style.boxShadow = `0 0 15px ${lightBlueColor}`; // Apply shadow on hover
+            // Apply shadow on bottom and right only
+            box.style.boxShadow = `5px 5px 15px ${lightBlueColor}`; // 5px to the right and bottom
         });
 
         box.addEventListener("mouseout", () => {

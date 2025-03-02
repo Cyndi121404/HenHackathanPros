@@ -93,7 +93,6 @@ button {
     transition: filter 0.3s ease-in-out;
 }
 
-/* Chatbox Styling */
 .chatbox {
     display: none;
     width: 100%;
@@ -143,6 +142,7 @@ button {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    align-items: flex-end; /* Align messages to the right */
 }
 
 /* Chat input container centered */
@@ -173,17 +173,14 @@ button {
 .message {
     background-color: #B5A8D5;
     color: #211C84;
-    padding: 8px;
+    padding: 8px 12px;
     margin-bottom: 5px;
-    border-radius: 5px;
-    max-width: 80%;
+    border-radius: 75px;
+    max-width: 70%; /* Prevents excessively wide messages */
+    word-wrap: break-word;
+    align-self: flex-end; /* Aligns messages to the right */
 }
 
-
-/* Hide chat provider button when chatbox is visible */
-.chat-provider.hidden {
-    display: none;
-}
 /* Styling for the barcode overlay */
 .barcode-overlay {
     position: absolute;

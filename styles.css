@@ -30,7 +30,7 @@ header h1 {
     grid-template-columns: repeat(3, 1fr); /* Three columns of equal width */
     gap: 20px;
     width: 100%;
-    max-width: 1200px; /* Limit the width of the dashboard */
+    max-width: 90%; /* Adjust grid to 90% of the page */
     padding: 20px;
     margin: 0 auto;
 }
@@ -71,20 +71,20 @@ header h1 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Drug Info */
+/* Drug Info (Make it bigger) */
 .drug-info {
     background: #3b2a20;
     color: #fff;
     border-radius: 10px;
-    padding: 20px;
-    height: 400px;
+    padding: 30px; /* Increased padding for larger space */
+    height: 500px; /* Increased height for bigger size */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-/* Chatbox Section */
+/* Chatbox Section (Make chat button smaller) */
 #chatbox {
     grid-column: span 3; /* Make chatbox take up full width */
     background: white;
@@ -97,14 +97,15 @@ header h1 {
     justify-content: space-between;
 }
 
-/* Buttons */
+/* Chat button (Smaller size) */
 button {
     background: #a8d8ff;
     color: #2a1d16;
     border: none;
-    padding: 10px 15px;
+    padding: 8px 12px; /* Smaller padding for smaller button */
     margin: 10px 0;
     border-radius: 10px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 14px; /* Smaller font size */
     transition: 0.3s;
+}

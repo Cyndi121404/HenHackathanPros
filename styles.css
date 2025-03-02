@@ -1,8 +1,8 @@
 /* General Styling */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #eeacfc;
-    color: #ffffff;
+    background-color: #B1B695;
+    color: #F4772A;
     margin: 0;
     padding: 0;
     display: flex;
@@ -37,7 +37,7 @@ header h1 {
 
 /* Sidebar (History) */
 .sidebar {
-    background: #0e0b0f;
+    background: ##6B9AC4;
     padding: 10px;
     border-radius: 250px;
     height: 400px; /* Set height for sidebar */
@@ -47,7 +47,7 @@ header h1 {
 /* Scanner container */
 /* Scanner container */
 .scanner-container {
-    background: #0e0b0f;
+    background: #6B9AC4;
     border-radius: 250px;
     padding: 20px;
     height: 400px;
@@ -69,7 +69,7 @@ header h1 {
 
 /* Manual Search */
 .manual-search {
-    background: #0e0b0f;
+    background: #6B9AC4;
     border-radius: 250px;
     padding: 20px;
     height: 400px;
@@ -82,8 +82,8 @@ header h1 {
 
 /* Drug Info (Make it bigger) */
 .drug-info {
-    background: #0e0b0f;
-    color: #fff;
+    background: #6B9AC4;
+    color: #F4772A;
     border-radius: 250px;
     padding: 30px; /* Increased padding for larger space */
     height: 500px; /* Increased height for bigger size */
@@ -96,7 +96,7 @@ header h1 {
 /* Chatbox Section (Make chat button smaller) */
 #chatbox {
     grid-column: span 3; /* Make chatbox take up full width */
-    background: #0e0b0f;
+    background: #6B9AC4;
     border-radius: 250px;
     padding: 20px;
     height: 400px;
@@ -108,8 +108,8 @@ header h1 {
 
 /* Chat button (Smaller size) */
 button {
-    background: #eeacfc;
-    color: #0e0b0f;
+    background: #F4772A;
+    color: #2B303A;
     border: none;
     padding: 8px 12px; /* Smaller padding for smaller button */
     margin: 10px 0;

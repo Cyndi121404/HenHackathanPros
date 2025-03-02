@@ -39,7 +39,7 @@ header h1 {
 /* Grid box styling */
 .grid-box {
     background: #6B9AC4;
-    border-radius: 150px;
+    border-radius: 100px;
     padding: 20px;
     height: 400px;
     display: flex;
@@ -57,7 +57,7 @@ button {
     border: none;
     padding: 8px 12px;
     margin: 10px 0;
-    border-radius: 150px;
+    border-radius: 100px;
     cursor: pointer;
     font-size: 14px;
     transition: 0.3s;

@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
     let chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || [];
 
-    // Initially, the chatbox is hidden (minimized) when the page is loaded
+    // Initially, hide the chatbox and show the chat button
     chatbox.classList.add("hidden");
     chatMessages.style.overflowY = "auto";
     chatMessages.style.maxHeight = "300px";
@@ -64,14 +64,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Toggle between showing the chat button and chatbox
     chatProviderButton.addEventListener("click", () => {
-        chatbox.classList.remove("hidden"); // Show the chatbox
-        chatProviderButton.classList.add("hidden"); // Hide the "Chat with Provider" button
+        // Hide the button and show the chatbox
+        chatProviderButton.classList.add("hidden");
+        chatbox.classList.remove("hidden");
     });
 
     // Minimize the chatbox
     chatMinimizeButton.addEventListener("click", () => {
-        chatbox.classList.add("hidden"); // Hide the chatbox
-        chatProviderButton.classList.remove("hidden"); // Show the "Chat with Provider" button
+        // Hide the chatbox and show the button
+        chatbox.classList.add("hidden");
+        chatProviderButton.classList.remove("hidden");
     });
 
     function sendMessage() {

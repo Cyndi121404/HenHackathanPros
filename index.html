@@ -3,140 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medication Reminder App</title>
-    <style>
-        /* Global styles */
-        body {
-            font-size: 16px;
-            padding: 20px;
-            background-color: #f4f4f4;
-            margin: 0;
-        }
-
-        /* Text input box styling */
-        #drug-input {
-            font-size: 16px;
-            padding: 12px;
-            border-radius: 10px;
-            border: 1px solid #ccc;
-            width: 100%;
-        }
-
-        /* Styling for buttons with rounded corners */
-        .button {
-            padding: 10px 20px;
-            background-color: #7A73D1;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-        }
-
-        /* Video preview styling */
-        #camera-preview {
-            width: 100%;
-            border-radius: 10px;
-            display: none;
-        }
-
-        /* Minimize video button */
-        #video-minimize-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: rgba(255, 0, 0, 0.5);
-            color: white;
-            border-radius: 50%;
-            font-size: 20px;
-            padding: 5px 10px;
-            cursor: pointer;
-        }
-
-        /* Reminder list styling */
-        #reminder-list {
-            margin-top: 10px;
-            font-size: 14px;
-            list-style-type: none;
-        }
-
-        #reminder-list li {
-            margin: 5px 0;
-        }
-
-        /* Chatbox styles */
-        #chatbox {
-            display: none;
-            background-color: #ffffff;
-            padding: 10px;
-            border-radius: 10px;
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            width: 300px;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .message {
-            margin-bottom: 10px;
-            padding: 5px;
-            background-color: #7A73D1;
-            color: white;
-            border-radius: 5px;
-        }
-
-        /* Minimize button */
-        #chat-minimize-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: rgba(255, 0, 0, 0.5);
-            color: white;
-            border-radius: 50%;
-            font-size: 20px;
-            padding: 5px 10px;
-            cursor: pointer;
-        }
-    </style>
+    <title>DoseDoodle</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
 </head>
 <body>
-    <h1>Medication Reminder App</h1>
+    <header>
+        <h1>DoseDoodle</h1>
+    </header>
 
-    <!-- Drug search input and button -->
-    <input type="text" id="drug-input" placeholder="Enter drug name">
-    <button id="search-drug" class="button">Search Drug</button>
+    <div class="main-container">
+        <div class="grid-box manual-search">
+            <input type="text" id="drug-input" placeholder="Enter Drug Name or NDC"><button id="search-drug">Search</button>
+        </div>
 
-    <!-- Drug information display -->
-    <div id="drug-name">Drug Name: <span></span></div>
-    <div id="drug-facts">Facts: <span></span></div>
+        <div class="grid-box scanner-container">
+            <button id="start-scan">Scan Barcode</button>
+            <video id="camera-preview"></video>
+        </div>
+        <div class="grid-box sidebar">
+            <h2>Search History</h2>
+            <ul id="history-list"></ul>
+        </div>
+       
 
-    <!-- Camera preview and scan button -->
-    <button id="start-scan" class="button">Start Scan</button>
-    <video id="camera-preview" autoplay></video>
-    <div id="video-minimize-button">X</div>
+        <div class="grid-box drug-info">
+            <h2>Drug Information</h2>
+            <p id="drug-name">Name: <span>-</span></p>
+            <p id="drug-facts">Facts: <span>-</span></p>
+            
+        </div> 
+        
 
-    <!-- Reminder functionality -->
-    <button id="set-reminder" class="button">Set Reminder</button>
-    <ul id="reminder-list"></ul>
+        <!-- Chat provider button -->
+<div class="grid-box chat-provider">
+    <button id="chat-provider-button">Chat with Provider</button>
+</div>
 
-    <!-- Chat provider button -->
-    <div class="chat-provider">
-        <button id="chat-provider-button" class="button">Open Chat</button>
+<!-- Chatbox that will be hidden initially -->
+<div class="grid-box chatbox" id="chatbox">
+    <div class="chat-header">
+        <button id="chat-minimize-button">x</button>
+        <h2>Chat with Provider</h2>
+        
     </div>
-
-    <!-- Chatbox -->
-    <div id="chatbox">
-        <div id="chat-messages"></div>
-        <input type="text" id="message-input" placeholder="Type a message">
-        <button id="send-button" class="button">Send</button>
-        <div id="chat-minimize-button">X</div>
+    <div id="chat-messages" class="chat-messages"></div>
+    <div class="chat-input">
+        <input type="text" id="message-input" placeholder="Type a message...">
+        <button id="send-button">Send</button>
     </div>
+</div>
 
-    <!-- Theme toggle button -->
-    <button id="toggle-theme" class="button">Toggle Theme</button>
-
-    <ul id="history-list"></ul>
-
-    <script src="app.js"></script>
+        <div class="grid-box reminder">
+            <button id="set-reminder">Set Reminder</button>
+            <button id="toggle-theme">Toggle Accesability Theme</button>
+        </div>
+    </div>
 </body>
 </html>

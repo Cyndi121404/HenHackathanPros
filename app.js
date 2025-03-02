@@ -110,8 +110,19 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    // Theme button functionality (Fixed version)
+    if (localStorage.getItem("theme") === "grayscale") {
+        document.body.classList.add("grayscale");
+    }
+
     themeButton.addEventListener("click", () => {
         document.body.classList.toggle("grayscale");
+        
+        if (document.body.classList.contains("grayscale")) {
+            localStorage.setItem("theme", "grayscale");
+        } else {
+            localStorage.removeItem("theme");
+        }
     });
 
     function fetchDrugInfo(query) {
@@ -145,24 +156,3 @@ document.addEventListener("DOMContentLoaded", () => {
     updateHistory();
     updateChatHistory();
 });
-
-    document.addEventListener("DOMContentLoaded", () => {
-        const themeButton = document.getElementById("toggle-theme");
-    
-        // Check for saved theme preference
-        if (localStorage.getItem("theme") === "grayscale") {
-            document.body.classList.add("grayscale");
-        }
-    
-        // Toggle grayscale mode on button click
-        themeButton.addEventListener("click", () => {
-            document.body.classList.toggle("grayscale");
-    
-            // Save the user's preference in localStorage
-            if (document.body.classList.contains("grayscale")) {
-                localStorage.setItem("theme", "grayscale");
-            } else {
-                localStorage.removeItem("theme");
-            }
-        });
-    });

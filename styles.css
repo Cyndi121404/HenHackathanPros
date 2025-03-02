@@ -1,9 +1,9 @@
 /* General Styling */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #2B303A;
+    background-color: #4D55CC;
     
-    color: #F4772A;
+    color: #B5A8D5;
     margin: 0;
     padding: 0;
     display: flex;
@@ -39,8 +39,8 @@ header h1 {
 
 /* Grid box styling */
 .grid-box {
-    background: #6B9AC4;
-    border-radius: 100px;
+    background: #211C84;
+    border-radius: 75px;
     padding: 20px;
     height: 400px;
     display: flex;
@@ -53,12 +53,12 @@ header h1 {
 
 /* Buttons */
 button {
-    background: #F4772A;
+    background: #B5A8D5;
     color: #2B303A;
     border: none;
     padding: 8px 12px;
     margin: 10px 0;
-    border-radius: 100px;
+    border-radius: 75px;
     cursor: pointer;
     font-size: 14px;
     transition: 0.3s;
@@ -74,7 +74,7 @@ button {
 #history-list li {
     cursor: pointer;  /* Makes items clickable */
     padding: 10px 15px;
-    background: #F4772A;
+    background: #B5A8D5;
     color: #2B303A;
     margin: 5px 0;
     border-radius: 12px;

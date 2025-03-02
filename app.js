@@ -136,47 +136,6 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
     });
-    scanButton.addEventListener("click", async () => {
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-            video.srcObject = stream;
-            video.play();
-    
-            // Start Quagga only when video is ready
-            video.addEventListener("canplay", () => {
-                Quagga.init({
-                    inputStream: {
-                        name: "Live",
-                        type: "LiveStream",
-                        target: video, // The video element where the scan is happening
-                    },
-                    decoder: {
-                        readers: ["ean_reader", "upc_reader", "code_128_reader"], // Add other readers as needed
-                    },
-                }, function(err) {
-                    if (err) {
-                        console.error(err);
-                        return;
-                    }
-                    Quagga.start();
-                });
-            });
-    
-            // Handle scanned barcode
-            Quagga.onDetected(function(result) {
-                const barcode = result.codeResult.code; // Get the scanned barcode
-                const barcodeOverlay = document.getElementById("barcode-overlay");
-                
-                // Update the overlay text and show it
-                barcodeOverlay.textContent = `Scanned: ${barcode}`;
-                barcodeOverlay.style.display = "flex"; // Show the overlay
-            });
-    
-        } catch (error) {
-            console.error("Error accessing the camera:", error);
-        }
-    });
-   
 
     themeButton.addEventListener("click", () => {
         document.body.classList.toggle("grayscale");
@@ -194,11 +153,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (!data.results || data.results.length === 0) {
                     throw new Error("No results found");
                 }
-    
+
                 let drug = data.results[0];
                 let name = drug.openfda.brand_name ? drug.openfda.brand_name[0] : "Unknown";
                 let dosing = drug.dosage_and_administration ? drug.dosage_and_administration[0] : "No dosing recommendations found";
-    
+
                 // Update the name and dosing information only
                 if (drugNameElem) {
                     drugNameElem.textContent = name;
@@ -206,7 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (document.getElementById("drug-dosing")) {
                     document.getElementById("drug-dosing").textContent = `Dosing Recommendation: ${dosing}`;
                 }
-    
+
                 // Save the search history if it's not already added
                 if (!searchHistory.includes(query)) {
                     searchHistory.push(query);
@@ -235,7 +194,7 @@ document.addEventListener("DOMContentLoaded", () => {
         backgroundContainer.style.zIndex = "-1"; // Ensure it stays in the background
         backgroundContainer.style.pointerEvents = "none"; // Allow clicks to pass through
         document.body.appendChild(backgroundContainer);
-    
+
         // Create and position 50 icons randomly
         for (let i = 0; i < 50; i++) {
             let icon = document.createElement("img");
@@ -249,8 +208,7 @@ document.addEventListener("DOMContentLoaded", () => {
             backgroundContainer.appendChild(icon);
         }
     });
-    
-    
+
     particlesJS("particles-js", {
         particles: {
             number: {
@@ -303,19 +261,4 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         retina_detect: true
     });
-    
-
-    const clearHistoryButton = document.createElement("button");
-clearHistoryButton.id = "clear-history";
-clearHistoryButton.textContent = "Clear History";
-document.querySelector(".sidebar").appendChild(clearHistoryButton);
-
-clearHistoryButton.addEventListener("click", () => {
-    localStorage.removeItem("searchHistory");
-    searchHistory = [];
-    updateHistory();
-});
-
-updateHistory();
-    updateChatHistory();
 });

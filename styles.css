@@ -91,3 +91,17 @@ button {
     filter: grayscale(100%);
     transition: filter 0.3s ease-in-out;
 }
+/* Initially hide the chatbox */
+.chatbox {
+    display: none;  /* Hidden by default */
+}
+
+/* Optionally, you can add a class for when chatbox is visible */
+.chatbox.visible {
+    display: block; /* Visible when toggled */
+}
+
+/* Hide the button when chatbox is visible */
+.chat-provider.hidden {
+    display: none;
+}
